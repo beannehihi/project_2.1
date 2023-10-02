@@ -8,7 +8,7 @@ class ProfileController extends Controller
 {
     public function create()
     {
-        return view('pages.profile');
+        return view('pages.user.profile');
     }
 
     public function update()

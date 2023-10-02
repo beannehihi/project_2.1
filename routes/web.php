@@ -20,6 +20,7 @@ Route::get('/', function () {
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\SessionsController;
 
 
@@ -42,16 +43,13 @@ Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')-
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('tables', function () {
-        return view('pages.tables');
-    })->name('tables');
-
+    Route::get('schoolYears', [SchoolYearController::class, 'create'])->name('schoolYears');
 
 
     Route::get('user-management', function () {
-        return view('pages.laravel-examples.user-management');
-    })->name('user-management');
-    Route::get('user-profile', function () {
-        return view('pages.laravel-examples.user-profile');
-    })->name('user-profile');
+        return view('pages.user.management');
+    })->name('management');
+
+    Route::get('user-profile', [ProfileController::class, 'create'])->name('profile');
+    Route::get('user-profile', [ProfileController::class, 'update'])->name('update_profile');
 });

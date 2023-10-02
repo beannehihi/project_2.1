@@ -19,8 +19,8 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user-profile' ? 'active bg-gradient-primary' : '' }} "
-                    href="{{ route('user-profile') }}">
+                <a class="nav-link text-white {{ $activePage == 'profile' ? 'active bg-gradient-primary' : '' }} "
+                    href="{{ route('profile') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-user-circle ps-2 pe-2 text-center"></i>
                     </div>
@@ -28,8 +28,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user-management' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('user-management') }}">
+                <a class="nav-link text-white {{ $activePage == 'management' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('management') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center"></i>
                     </div>
@@ -49,12 +49,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'tables' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('tables') }}">
+                <a class="nav-link text-white {{ $activePage == 'schoolYears' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('schoolYears') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">table_view</i>
                     </div>
-                    <span class="nav-link-text ms-1">Tables</span>
+                    <span class="nav-link-text ms-1">School Years</span>
                 </a>
             </li>
         </ul>

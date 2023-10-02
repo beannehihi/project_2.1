@@ -41,7 +41,7 @@
                 </div>
                 <div class="card card-plain h-100">
                     <div class="card-body p-3">
-                        <form method='POST' action='{{ route('user-profile') }}'>
+                        <form method='POST' action='{{ route('update_profile') }}'>
                             @csrf
                             <div class="row">
                                 <div class="mb-3 col-md-6 d-flex gap-2">
