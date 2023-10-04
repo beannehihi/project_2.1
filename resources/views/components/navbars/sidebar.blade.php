@@ -49,8 +49,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'schoolYears' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('schoolYears') }}">
+                <a class="nav-link text-white {{ $activePage == 'school_years' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('school_years') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">table_view</i>
                     </div>

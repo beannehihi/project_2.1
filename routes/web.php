@@ -43,7 +43,12 @@ Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')-
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('schoolYears', [SchoolYearController::class, 'create'])->name('schoolYears');
+    Route::get('school_years', [SchoolYearController::class, 'create'])->name('school_years');
+    Route::post('school_years', [SchoolYearController::class, 'add'])->name('school_years_add');
+    Route::put('school_years', [SchoolYearController::class, 'update'])->name('school_years_update');
+
+    Route::get('school_years/{schoolYear_id}/classes', [SchoolYearController::class, 'get_class'])->name('get_all_classes');
+
 
 
     Route::get('user-management', function () {

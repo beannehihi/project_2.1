@@ -1,80 +1,142 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
-    <x-navbars.sidebar activePage="tables"></x-navbars.sidebar>
+    <x-navbars.sidebar activePage="School Year"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
-        <x-navbars.navs.auth titlePage="Tables"></x-navbars.navs.auth>
+        <x-navbars.navs.auth titlePage="School Year"></x-navbars.navs.auth>
         <!-- End Navbar -->
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-4" style="height: 80vh">
+            <div class="py-4">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    thêm liên khóa
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">
+                    Thêm lớp
+                </button>
+            </div>
+
             <div class="row">
-                <div class="col-12">
-                    <div class="card my-4">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-secondary shadow-secondary border-radius-lg pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Authors table</h6>
+                @foreach ($schoolYears as $index => $schoolYear)
+                    <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4">
+                        <div class="card">
+                            <div class="card-header p-3 pt-2">
+                                <div
+                                    class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                                    <h4 class="mb-0 text-white py-3">{{ $schoolYear->name }}</h4>
+                                </div>
+                                <div class="text-end pt-1">
+                                    <p>
+                                        <button class="btn btn-warning" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#a{{ $index }}" aria-expanded="false"
+                                            aria-controls="a{{ $index }}">
+                                            Class <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                        </button>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn " data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal{{ $index }}">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body px-0 pb-2">
-                            <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Author</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Function</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Status</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Employed</th>
-                                            <th class="text-secondary opacity-7"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <div>
-                                                        <img src="{{ asset('assets') }}/img/team-2.jpg"
-                                                            class="avatar avatar-sm me-3 border-radius-lg"
-                                                            alt="user1">
-                                                    </div>
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">John Michael</h6>
-                                                        <p class="text-xs text-secondary mb-0">john@creative-tim.com
-                                                        </p>
-                                                    </div>
+                            @foreach ($classes as $class)
+                                @if ($class->schoolYear_id === $schoolYear->id)
+                                    <div class="card-footer p-3">
+                                        <div class="collapse" id="a{{ $index }}">
+                                            <a href="#">
+                                                <div class="card card-body p-2 text-center fs-4 mb-2 ">
+                                                    {{ $class->name }}
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">Manager</p>
-                                                <p class="text-xs text-secondary mb-0">Organization</p>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <span class="badge badge-sm bg-gradient-success">Online</span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                    data-toggle="tooltip" data-original-title="Edit user">
-                                                    Edit
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    {{-- Modal update schoolYear --}}
+                    <div class="modal fade" id="exampleModal{{ $index }}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit liên khóa</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('school_years_update', $schoolYear->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="id" value="{{ $schoolYear->id }}">
+                                        <div class="modal-body">
+                                            <div class="input-group input-group-dynamic mb-4">
+                                                <input type="text" class="form-control"
+                                                    aria-label="Amount (to the nearest dollar)"
+                                                    value="{{ $schoolYear->name }}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary h-4">cập nhật</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Modal Add -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Liên khóa</h5>
+                            <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('school_years_add') }}" method="POST">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label">tên Liên khóa </label>
+                                    <input name="name" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary h-4">Thêm mới</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
 
-            <x-footers.auth></x-footers.auth>
+            <!-- Modal Add Class -->
+            <div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="addClassModalLabel"
+                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addClassModalLabel">Thêm lớp</h5>
+                            <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <form action="" method="">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label">Tên lớp</label>
+                                    <input name="class_name" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Thêm lớp</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
     <x-plugins></x-plugins>

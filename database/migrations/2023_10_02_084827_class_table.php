@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('schoolYear_id');
             $table->timestamps();
 
-            $table->foreign('schoolYear_id')->references('id')->on('schoolYears');
+            $table->foreign('schoolYear_id')->references('id')->on('school_years');
         });
     }
 
