@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('location')->nullable();
-            $table->boolean('status')->default(false);
+            $table->unsignedInteger('gender')->nullable();
+            $table->unsignedInteger('role')->default(3);
+            $table->unsignedInteger('status')->nullable();
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('class_id');

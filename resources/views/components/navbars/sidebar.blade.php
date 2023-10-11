@@ -8,7 +8,9 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0 d-flex text-wrap align-items-center" href=" {{ route('dashboard') }} ">
             <img src="{{ asset('assets') }}/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-2 font-weight-bold text-white">Material Dashboard 2 Laravel</span>
+            <span class="ms-3 font-weight-bold text-white">
+                <h3 class="text-white">Laravel</h3>
+            </span>
         </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -19,7 +21,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'profile' ? 'active bg-gradient-primary' : '' }} "
+                <a class="nav-link text-white {{ $activePage == 'profile' ? 'active bg-gradient-danger' : '' }} "
                     href="{{ route('profile') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-user-circle ps-2 pe-2 text-center"></i>
@@ -28,7 +30,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'management' ? ' active bg-gradient-primary' : '' }} "
+                <a class="nav-link text-white {{ $activePage == 'management' ? ' active bg-gradient-warning' : '' }} "
                     href="{{ route('management') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center"></i>
@@ -49,12 +51,21 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'school_years' ? ' active bg-gradient-primary' : '' }} "
+                <a class="nav-link text-white {{ $activePage == 'school_years' ? ' active bg-gradient-success   ' : '' }} "
                     href="{{ route('school_years') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">table_view</i>
+                        <i class="fa fa-university" aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">School Years</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'majors' ? ' active bg-gradient-info   ' : '' }} "
+                    href="{{ route('majors') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Majors</span>
                 </a>
             </li>
         </ul>

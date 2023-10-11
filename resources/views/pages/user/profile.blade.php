@@ -1,6 +1,6 @@
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
 
-    <x-navbars.sidebar activePage="user-profile"></x-navbars.sidebar>
+    <x-navbars.sidebar activePage="profile"></x-navbars.sidebar>
     <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
         <!-- Navbar -->
         <x-navbars.navs.auth titlePage='User Profile'></x-navbars.navs.auth>
@@ -18,21 +18,7 @@
                                     <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;"
                                         role="tab" aria-selected="true">
                                         <i class="material-icons text-lg position-relative">home</i>
-                                        <span class="ms-1">App</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;"
-                                        role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">email</i>
-                                        <span class="ms-1">Messages</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;"
-                                        role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">settings</i>
-                                        <span class="ms-1">Settings</span>
+                                        <span class="ms-1">INFOR</span>
                                     </a>
                                 </li>
                             </ul>
@@ -77,7 +63,7 @@
 
                                 <div class="mb-3 col-md-3">
                                     <label class="form-label">Phone</label>
-                                    <input type="number" name="phone" class="form-control border border-2 p-2"
+                                    <input type="text" name="phone" class="form-control border border-2 p-2"
                                         value='{{ old('phone', auth()->user()->phone) }}'>
                                     @error('phone')
                                         <p class='text-danger inputerror'>{{ $message }} </p>

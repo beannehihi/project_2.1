@@ -20,9 +20,11 @@ Route::get('/', function () {
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\SessionsController;
 
+use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\MajorController;
 
 Route::get('/', function () {
     return redirect('sign-in');
@@ -44,10 +46,13 @@ Route::post('user-profile', [ProfileController::class, 'update'])->middleware('a
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('school_years', [SchoolYearController::class, 'create'])->name('school_years');
-    Route::post('school_years', [SchoolYearController::class, 'add'])->name('school_years_add');
-    Route::put('school_years', [SchoolYearController::class, 'update'])->name('school_years_update');
+    Route::post('school_years_add', [SchoolYearController::class, 'add'])->name('school_years_add');
+    Route::put('school_years_update', [SchoolYearController::class, 'update'])->name('school_years_update');
+    Route::post('classes_add', [SchoolYearController::class, 'addClass'])->name('class_add');
 
-    Route::get('school_years/{schoolYear_id}/classes', [SchoolYearController::class, 'get_class'])->name('get_all_classes');
+    Route::get('classes/{id}', [ClassesController::class, 'create'])->name('classes');
+
+    Route::get('majors', [MajorController::class, 'create'])->name('majors');
 
 
 
