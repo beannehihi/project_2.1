@@ -14,28 +14,34 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-warning shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                                <h4 class="mb-0 text-white py-3">D04</h4>
-
+                                <h4 class="mb-0 text-white py-3">{{ $classes->toArray()['name'] }} </h4>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Niên Khóa</p>
-                                <h4 class="mb-0">K13</h4>
+                                <h4 class="mb-0">{{ $classes->toArray()['school_year']['name'] }}</h4>
                             </div>
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <p class="mb-0 text-xl font-weight-bolder text-warning"><span
-                                    class="text-success text-sm font-weight-bolder">Số lượng: </span>100
-                            </p>
+                            <div class="d-flex bd-highlight text-uppercase">
+                                <div class="p-2 bd-highlight text-warning h6">khai giảng:</div>
+                                <div class="p-2 bd-highlight"></div>
+                                <div class="ms-auto p-2 bd-highlight ">
+                                    {{ date('d/m/Y', strtotime($classes->toArray()['created_at'])) }}</div>
+                            </div>
+                            <div class="d-flex bd-highlight text-uppercase">
+                                <div class="p-2 bd-highlight text-info h6">sinh viên:</div>
+                                <div class="p-2 bd-highlight"></div>
+                                <div class="ms-auto p-2 bd-highlight ">{{ $studentCount }}</div>
+                            </div>
 
-                            <p class="mb-0 text-xl font-weight-bolder text-danger"><span
-                                    class="text-warning text-sm font-weight-bolder">Số lượng nợ học phí: </span>100
-                            </p>
                         </div>
                     </div>
                 </div>
 
+
                 {{-- table student --}}
+
                 <div class="col-9">
                     <div class="card my-4">
                         <div class="card-body px-0 pb-2">
@@ -83,9 +89,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i < 3; $i++)
+                                        @foreach ($students as $student)
                                             <tr>
-                                                <td class="align-middle">
+                                                <td class="align-middle" style="width: 1px">
                                                     <button class="btn border border-1 shadow" type="button"
                                                         id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                                         aria-expanded="false">
@@ -101,9 +107,9 @@
                                                     </ul>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex px-2 py-1" style="width: 1px;">
                                                         <div>
-                                                            <img src="{{ asset('assets') }}/img/team-2.jpg"
+                                                            <img src="{{ $student->img }}"
                                                                 class="avatar avatar-sm me-3 border-radius-lg"
                                                                 alt="user1">
                                                         </div>
@@ -112,26 +118,26 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">John</h6>
-                                                        <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
+                                                        <h6 class="mb-0 text-sm">{{ $student->name }}</h6>
+                                                        <p class="text-xs text-secondary mb-0">{{ $student->email }}</p>
 
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
-                                                    <p class="text-xs text-secondary mb-0">032151841</p>
+                                                    <p class="text-xs text-secondary mb-0">{{ $student->phone }}</p>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">22/03/18</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $student->date_of_birth }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <a class="btn btn-warning rounded py-2" href="">
-                                                        <span
-                                                            class="text-secondary text-xl text-white font-weight-bold ">debt</span>
-                                                    </a>
+                                                    <button type="button" class="btn btn-warning shadow"
+                                                        data-bs-toggle="modal" data-bs-target="#tuitionModal">
+                                                        <span>DEBT</span>
+                                                    </button>
                                                 </td>
                                             </tr>
-                                        @endfor
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -260,6 +266,69 @@
                     </div>
                 </div>
 
+                {{-- Modal Tuition --}}
+                <div class="modal fade" id="tuitionModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl   ">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close bg-dark" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body mx-sm-12">
+                                <h5>Tên Sinh Viên - Nộp học phí</h5>
+                                <div class="mt-4 d-flex bd-highlight">
+                                    <div class="p-2 bd-highlight d-flex flex-column text-uppercase align-items-end ">
+                                        <label class="form-label mb-5">hình thức nộp:</label class="form-label">
+                                        <label class="form-label mb-5">Học phí:</label class="form-label">
+                                        <label class="form-label mb-5">số tiền phải thu:</label class="form-label">
+                                        <label class="form-label mb-5 ">đóng trước:</label class="form-label">
+                                        <label class="form-label mb-5 ">thực thu:</label class="form-label">
+                                        <label class="form-label mb-5 ">ngày thu:</label class="form-label">
+
+                                    </div>
+                                    <div class="p-2 bd-highlight d-flex flex-column ">
+                                        <div style="margin-bottom: 44px">
+                                            <div class="form-check form-check-inline" style="height: 0px">
+                                                <input class="form-check-input" type="radio"
+                                                    name="inlineRadioOptions" id="inlineRadio1" value="option1"
+                                                    checked>
+                                                <label class="form-check-label" for="inlineRadio1">Quý</label>
+                                            </div>
+                                            <div class="form-check form-check-inline" style="height: 0px">
+                                                <input class="form-check-input" type="radio"
+                                                    name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label" for="inlineRadio2">Tháng</label>
+                                            </div>
+                                        </div>
+
+                                        <label class="form-label mb-5">3.000.000 <span
+                                                class="text-uppercase text-success">vnd</span></label>
+                                        <label class="form-label mb-5 text-danger">3.000.000 <span
+                                                class="text-uppercase text-danger">vnd</span></label>
+                                        <input type="text" name="name" class="form-control border p-2 mb-4"
+                                            placeholder="nhập số tiền phải đóng..." value=''>
+                                        <input type="text" name="name" class="form-control border p-2 mb-4"
+                                            placeholder="." value='3.000.000 VND'>
+                                        <input type="date" name="name" class="form-control border p-2 mb-4"
+                                            placeholder="." value=''>
+
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-warning">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>

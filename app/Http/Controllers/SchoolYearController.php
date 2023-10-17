@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Models\Fees;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,27 @@ class SchoolYearController extends Controller
         return redirect()->route('school_years')->with('success', 'Thêm thành công');
     }
 
+    public function update(Request $request)
+    {
+        $id = $request->get('id');
+        $validateData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
 
+        $schoolYear = SchoolYear::find($id);
+
+        if (!$schoolYear) {
+            return redirect()->route('school_years')->with('error', 'Không tìm thấy schoolYear');
+        }
+
+        $schoolYear->name = $validateData['name'];
+        $schoolYear->save();
+
+        return redirect()->route('school_years')->with('success', 'Cập nhật tên schoolYear thành công');
+    }
+
+
+    // classes
     public function addClass(Request $request)
     {
         $validateData = $request->validate([
@@ -72,24 +93,5 @@ class SchoolYearController extends Controller
         ]);
 
         return redirect()->route('school_years')->with('success', 'Thêm lớp thành công');
-    }
-
-    public function update(Request $request)
-    {
-        $id = $request->get('id');
-        $validateData = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $schoolYear = SchoolYear::find($id);
-
-        if (!$schoolYear) {
-            return redirect()->route('school_years')->with('error', 'Không tìm thấy schoolYear');
-        }
-
-        $schoolYear->name = $validateData['name'];
-        $schoolYear->save();
-
-        return redirect()->route('school_years')->with('success', 'Cập nhật tên schoolYear thành công');
     }
 }

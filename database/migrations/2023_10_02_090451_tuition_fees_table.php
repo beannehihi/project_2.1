@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('tuition_fees', function (Blueprint $table) {
             $table->id();
-            $table->float('fee_payment')->nullable();
-            $table->float('fee_in_one')->nullable();
-            $table->float('total_fee_debt')->nullable();
+            $table->string('payment_fee')->nullable();
+            $table->string('times')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('fee_id');

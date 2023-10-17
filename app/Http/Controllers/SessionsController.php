@@ -32,7 +32,8 @@ class SessionsController extends Controller
 
         session()->regenerate();
 
-        return redirect('/dashboard')->with('success', 'Login successfully');
+        toastr()->addSuccess('Login SuccessFully.');
+        return redirect('/dashboard');
     }
 
 

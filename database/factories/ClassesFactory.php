@@ -18,13 +18,14 @@ class ClassesFactory extends Factory
     public function definition(): array
     {
         static $number = 1;
+        $createdAt = now()->format('Y-m-d');
         return [
             'name' => 'D' . str_pad($number++, 2, '0', STR_PAD_LEFT),
             'schoolYear_id' => function () {
                 return SchoolYear::inRandomOrder()->first()->id;
             },
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

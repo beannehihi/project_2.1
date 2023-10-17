@@ -18,16 +18,16 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->unique();
+            $table->string('password')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('location')->nullable();
-            $table->unsignedInteger('gender')->nullable();
-            $table->unsignedInteger('role')->default(3);
-            $table->unsignedInteger('status')->nullable();
+            $table->smallInteger('gender')->nullable();
+            $table->smallInteger('role')->default('3');
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('class_id');
             $table->unsignedBigInteger('major_id');
-            $table->unsignedBigInteger('tuition_fee_id');
+            $table->unsignedBigInteger('tuition_fee_id')->nullable();
             $table->timestamps();
 
             // Định nghĩa các khóa ngoại

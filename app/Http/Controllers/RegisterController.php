@@ -26,6 +26,8 @@ class RegisterController extends Controller
         $user = User::create($attributes);
         auth()->login($user);
 
-        return redirect('/dashboard')->with('success', 'Register successfully');
+        toastr()->addSuccess('Register SuccessFully.');
+
+        return redirect('/dashboard');
     }
 }

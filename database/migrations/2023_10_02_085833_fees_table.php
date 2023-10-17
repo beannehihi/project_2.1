@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->string('month')->nullable();
-            $table->float('total_fee')->nullable();
+            $table->unsignedBigInteger('month')->nullable();
+            $table->string('total_fee')->nullable();
 
 
             $table->unsignedBigInteger('schoolYear_id');

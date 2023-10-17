@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Classes;
+use App\Models\Fees;
 use App\Models\Major;
 use App\Models\SchoolYear;
+use App\Models\Student;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -20,7 +22,9 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->count(2)->create();
         SchoolYear::factory()->count(10)->create();
-        Classes::factory()->count(10)->create();
-        Major::factory()->count(10)->create();
+        Classes::factory()->count(20)->create();
+        Major::factory()->count(20)->create();
+        Fees::factory()->count(10)->create();
+        Student::factory()->count(50)->create();
     }
 }

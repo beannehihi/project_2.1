@@ -36,7 +36,7 @@
                                             <i class="fa fa-caret-down" aria-hidden="true"></i>
                                         </button>
                                     @endif
-                                    <!-- Button modal -->
+                                    <!-- Button modal Update SchoolYear -->
                                     <button type="button" class="btn border border-1 shadow" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal{{ $index }}">
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -115,7 +115,10 @@
                                         <p class='text-danger inputerror'>{{ $message }} </p>
                                     @enderror
                                 </div>
+
+
                             </div>
+
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary h-4">Thêm mới</button>
                             </div>

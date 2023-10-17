@@ -17,8 +17,7 @@
     <div class=" w-auto  max-height-vh-100">
         <ul class="navbar-nav">
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Laravel examples
-                </h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Accounts</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'profile' ? 'active bg-gradient-danger' : '' }} "
@@ -66,6 +65,15 @@
                         <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Majors</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'fees' ? ' active bg-gradient-success   ' : '' }} "
+                    href="{{ route('fees') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Fee</span>
                 </a>
             </li>
         </ul>

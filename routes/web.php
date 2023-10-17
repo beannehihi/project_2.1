@@ -24,7 +24,9 @@ use App\Http\Controllers\SessionsController;
 
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\MajorController;
+use App\Models\Fees;
 
 Route::get('/', function () {
     return redirect('sign-in');
@@ -53,7 +55,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('classes/{id}', [ClassesController::class, 'create'])->name('classes');
 
     Route::get('majors', [MajorController::class, 'create'])->name('majors');
+    Route::post('majors/add', [MajorController::class, 'add'])->name('majors_add');
+    Route::put('majors/update', [MajorController::class, 'update'])->name('major_update');
+    Route::delete('majors/delete/{id}', [MajorController::class, 'delete'])->name('majors_delete');
 
+    Route::get('fees', [FeeController::class, 'create'])->name('fees');
+    Route::post('fees/add', [FeeController::class, 'add'])->name('fees_add');
+    Route::delete('fees/delete.{id}', [FeeController::class, 'delete'])->name('fees_delete');
 
 
     Route::get('user-management', function () {

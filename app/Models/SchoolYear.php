@@ -15,6 +15,11 @@ class SchoolYear extends Model
 
     public function classes()
     {
-        return $this->hasMany(Classes::class, 'schoolYear_id');
+        return $this->hasMany(Classes::class, 'schoolYear_id', 'id');
+    }
+
+    public function fees()
+    {
+        return $this->hasMany(Fee::class, 'schoolYear_id', 'id');
     }
 }

@@ -12,4 +12,9 @@ class Major extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function fees()
+    {
+        return $this->hasMany(Fee::class, 'major_id', 'id');
+    }
 }
