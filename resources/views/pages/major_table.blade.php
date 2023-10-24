@@ -138,10 +138,9 @@
             <div class="pagination">
                 {{ $majors->links('vendor.pagination.bootstrap-5') }}
             </div>
-            <x-footers.auth></x-footers.auth>
         </div>
 
-        {{-- add modals --}}
+        {{-- add modals major --}}
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

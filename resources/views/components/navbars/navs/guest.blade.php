@@ -40,7 +40,7 @@
                     </a>
                 </li>
             </ul>
-            <ul class="navbar-nav d-lg-block d-none">
+            <ul class="navbar-nav d-lg-block d-none px-2">
                 <li class="nav-item">
                 <li href="" class="btn btn-sm mb-0 me-1 bg-gradient-primary" target="_blank">LARAVEL</li>
                 </li>

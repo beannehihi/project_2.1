@@ -9,7 +9,7 @@ class MajorController extends Controller
 {
     public function create()
     {
-        $majors = Major::orderBy('created_at', 'desc')->paginate(7);
+        $majors = Major::orderBy('created_at', 'desc')->paginate(6);
 
 
         return view('pages.major_table', compact('majors'));
@@ -61,13 +61,19 @@ class MajorController extends Controller
     {
         $major = Major::find($id);
 
-        if ($major) {
-            $major->delete();
-            toastr()->addSuccess('Xóa thành công');
-            return redirect()->route('majors');
-        } else {
-            toastr()->addError('không thể xóa chuyên ngành này.');
+        if (!$major) {
+            toastr()->addError('Không tìm thấy chuyên ngành.');
             return redirect()->route('majors');
         }
+
+        // Kiểm tra ràng buộc khóa ngoại trước khi xóa
+        if ($major->fees()->count() > 0) {
+            toastr()->addError('Không thể xóa chuyên ngành này vì nó đang được sử dụng.');
+            return redirect()->route('majors');
+        }
+
+        $major->delete();
+        toastr()->addSuccess('Xóa thành công');
+        return redirect()->route('majors');
     }
 }

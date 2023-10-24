@@ -26,6 +26,7 @@ use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\TuitionController;
 use App\Models\Fees;
 
 Route::get('/', function () {
@@ -53,6 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('classes_add', [SchoolYearController::class, 'addClass'])->name('class_add');
 
     Route::get('classes/{id}', [ClassesController::class, 'create'])->name('classes');
+    Route::post('/students/add/{class_id}', [ClassesController::class, 'add'])->name('classes.add');
+    Route::delete('classes/students/{id}', [ClassesController::class, 'delete'])->name('classes.delete');
 
     Route::get('majors', [MajorController::class, 'create'])->name('majors');
     Route::post('majors/add', [MajorController::class, 'add'])->name('majors_add');
@@ -61,7 +64,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('fees', [FeeController::class, 'create'])->name('fees');
     Route::post('fees/add', [FeeController::class, 'add'])->name('fees_add');
+    Route::put('fees/update', [FeeController::class, 'update'])->name('fees_update');
     Route::delete('fees/delete.{id}', [FeeController::class, 'delete'])->name('fees_delete');
+
+    Route::get('tuition', [TuitionController::class, 'create'])->name('tuition');
 
 
     Route::get('user-management', function () {

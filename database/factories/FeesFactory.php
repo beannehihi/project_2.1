@@ -19,8 +19,8 @@ class FeesFactory extends Factory
     public function definition(): array
     {
         return [
-            'month' => 30,
-            'total_fee' => $this->faker->numberBetween(1000000, 10000000), // Giới hạn 'total_fee' trong khoảng từ 1.000.000 đến 10.000.000
+            'month' => 1,
+            'total_fee' => $this->faker->numberBetween(1, 10) * 1000000, // Giới hạn 'total_fee' trong khoảng từ 1.000.000 đến 10.000.000
             'schoolYear_id' => function () {
                 return SchoolYear::inRandomOrder()->first()->id;
             },

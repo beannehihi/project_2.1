@@ -16,6 +16,11 @@ class Classes extends Model
 
     public function schoolYear()
     {
-        return $this->belongsTo(SchoolYear::class, 'schoolYear_id');
+        return $this->belongsTo(SchoolYear::class, 'schoolYear_id', 'id');
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'class_id', 'id');
     }
 }

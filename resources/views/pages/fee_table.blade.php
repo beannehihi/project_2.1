@@ -39,14 +39,14 @@
                                                 SchoolYear & Major</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Moth</th>
+                                                Payment period</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Total fee</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($fees as $fee)
+                                        @foreach ($fees as $index => $fee)
                                             <tr>
                                                 <td class="align-middle w-2">
                                                     <button class="btn border border-1 shadow" type="button"
@@ -57,7 +57,7 @@
                                                     <ul class="dropdown-menu border border-1" style="min-width: 5px"
                                                         aria-labelledby="dropdownMenuButton1">
                                                         <form action="{{ route('fees_delete', $fee->id) }}"
-                                                            method="post">
+                                                            method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <li class="px-2 dropdown-item"><button class="dropdown-item"
@@ -65,8 +65,8 @@
                                                         </form>
 
                                                         <li class="px-2 " data-bs-toggle="modal"
-                                                            data-bs-target="#editModal"><button class="dropdown-item "
-                                                                href="#">Edit</button>
+                                                            data-bs-target="#editModal_{{ $index }}"><button
+                                                                class="dropdown-item " href="#">Edit</button>
                                                         </li>
                                                     </ul>
                                                 </td>
@@ -86,6 +86,100 @@
                                                             class="text-uppercase text-success">VND</span> </p>
                                                 </td>
                                             </tr>
+
+
+
+                                            {{-- modal edit fee --}}
+                                            <div class="modal fade" id="editModal_{{ $index }}" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="btn-close bg-dark"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form action="{{ route('fees_update', $fee->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="id"
+                                                                value="{{ $fee->id }}">
+                                                            <div class="modal-body">
+                                                                <div class="modal-body">
+                                                                    <h5>Tổng học phí:</h5>
+                                                                    <div class="row">
+                                                                        <div class="mb-3 col-md-4">
+                                                                            <label class="form-label">tổng phí</label>
+                                                                            <input type="text" name="total_fee"
+                                                                                class="form-control border p-2"
+                                                                                placeholder="Enter name..."
+                                                                                value='{{ $fee->total_fee }}' disabled>
+                                                                            @error('name')
+                                                                                <p class='text-danger inputerror'>
+                                                                                    {{ $message }} </p>
+                                                                            @enderror
+                                                                        </div>
+
+                                                                        <div class="mb-3 col-md-4">
+                                                                            <label class="form-label">Đợt đóng</label>
+                                                                            <input type="number" name="month"
+                                                                                class="form-control border p-2"
+                                                                                placeholder="Enter date..."
+                                                                                value='{{ $fee->month }}'>
+                                                                            @error('date')
+                                                                                <p class='text-danger inputerror'>
+                                                                                    {{ $message }} </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mt-4">
+                                                                        <h5> chuyên ngành & niên khóa</h5>
+                                                                        <div class="mb-3 col-md-6">
+                                                                            <label class="form-label">Niên khóa</label>
+                                                                            <select name="schoolYear_id"
+                                                                                class="form-select p-2 border border-2"
+                                                                                aria-label="Default select example">
+                                                                                <option selected>Choose SchoolYear...
+                                                                                </option>
+                                                                                @foreach ($schoolYears as $year)
+                                                                                    <option
+                                                                                        value="{{ $year->id }}"
+                                                                                        {{ $year->id == $fee->schoolYear_id ? 'selected' : '' }}>
+                                                                                        {{ $year->name }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div class="mb-3 col-md-6">
+                                                                            <label class="form-label">Chuyên
+                                                                                Ngành</label>
+                                                                            <select name="major_id"
+                                                                                class="form-select p-2 border border-2 form-select-sm rounded-2"
+                                                                                aria-label=".form-select-sm example">
+                                                                                <option selected>Choose Major...
+                                                                                </option>
+                                                                                @foreach ($majors as $major)
+                                                                                    <option
+                                                                                        value="{{ $major->id }}"
+                                                                                        {{ $major->id == $fee->major_id ? 'selected' : '' }}>
+                                                                                        {{ $major->name }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Hủy</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-warning">Lưu</button>
+                                                                </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -97,12 +191,12 @@
             <div class="pagination">
                 {{ $fees->links('vendor.pagination.bootstrap-5') }}
             </div>
-            <x-footers.auth></x-footers.auth>
         </div>
 
-        {{-- modal ada fee  --}}
-        <div class="modal fade" id="feeAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl   ">
+        {{-- modal add fee  --}}
+        <div class="modal fade" id="feeAddModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="btn-close bg-dark" data-bs-dismiss="modal"
@@ -123,18 +217,20 @@
                                 </div>
 
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label">tổng số tháng</label>
+                                    <label class="form-label">Đợt đóng</label>
                                     <input type="text" name="month" class="form-control border p-2"
                                         placeholder="Enter date..." value=''>
                                     @error('date')
                                         <p class='text-danger inputerror'>{{ $message }} </p>
                                     @enderror
                                 </div>
+
+
                             </div>
 
                             <div class="row mt-4">
                                 <h5> chuyên ngành & niên khóa</h5>
-                                <div class="mb-3 col-md-3">
+                                <div class="mb-3 col-md-6">
                                     <label class="form-label">Niên khóa</label>
                                     <select name="schoolYear_id" class="form-select p-2 border border-2"
                                         aria-label="Default select example">
@@ -145,8 +241,8 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3 col-md-3">
-                                    <label class="form-label">Major</label>
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label">Chuyên Ngành</label>
                                     <select name="major_id"
                                         class="form-select p-2 border border-2 form-select-sm rounded-2"
                                         aria-label=".form-select-sm example">
@@ -166,6 +262,9 @@
                 </div>
             </div>
         </div>
+
+
+
     </main>
     <x-plugins></x-plugins>
 

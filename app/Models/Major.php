@@ -15,6 +15,6 @@ class Major extends Model
 
     public function fees()
     {
-        return $this->hasMany(Fee::class, 'major_id', 'id');
+        return $this->hasMany(Fees::class, 'major_id', 'id');
     }
 }

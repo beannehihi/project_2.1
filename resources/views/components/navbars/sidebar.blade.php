@@ -44,7 +44,7 @@
                 <a class="nav-link text-white {{ $activePage == 'dashboard' ? ' active bg-gradient-primary' : '' }} "
                     href="{{ route('dashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">dashboard</i>
+                        <i class="material-icons ">dashboard</i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
@@ -76,6 +76,17 @@
                     <span class="nav-link-text ms-1">Fee</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'tuition' ? ' active bg-gradient-success   ' : '' }} "
+                    href="{{ route('tuition') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Tuition Manager</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </aside>

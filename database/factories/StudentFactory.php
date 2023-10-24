@@ -7,6 +7,7 @@ use App\Models\Major;
 use App\Models\Tuition_fee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Student>
@@ -20,17 +21,19 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
+
+        $studentCode = 'BKC-' . mt_rand(1000, 9999);
         return [
-            'img' => $this->faker->imageUrl(), // Thay thế bằng đường dẫn thực tế đến hình ảnh (nếu có)
+            'student_code' => $studentCode, // Mã sinh viên ngẫu nhiên từ 1000 đến 9999
+            'img' => $this->faker->imageUrl(), // URL hình ảnh ngẫu nhiên
             'name' => $this->faker->name,
             'date_of_birth' => $this->faker->date,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
-            'password' => bcrypt('password'), // Thay 'password' bằng mật khẩu mặc định nếu cần
-            'email_verified_at' => now(),
+            'password' => bcrypt('$studentCode'), // Mật khẩu mẫu
             'location' => $this->faker->address,
-            'gender' => $this->faker->randomElement([0, 1]), // 0: Nam, 1: Nữ
-            'role' => 3, // Mặc định là 3
+            'gender' => $this->faker->randomElement(['0', '1']), // Giới tính ngẫu nhiên
+            'role' => '3', // Vai trò mặc định
             'user_id' => User::inRandomOrder()->first()->id,
             'class_id' => Classes::inRandomOrder()->first()->id,
             'major_id' => Major::inRandomOrder()->first()->id,

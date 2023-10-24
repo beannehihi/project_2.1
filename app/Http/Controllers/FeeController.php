@@ -11,7 +11,7 @@ class FeeController extends Controller
 {
     public function create()
     {
-        $fees = Fees::orderBy('created_at', 'desc')->paginate(7);
+        $fees = Fees::orderBy('created_at', 'desc')->paginate(6);
 
         $majors = Major::all();
 
@@ -42,6 +42,27 @@ class FeeController extends Controller
         return redirect()->route('fees');
     }
 
+    public function update(Request $request)
+    {
+        $id = $request->input('id'); // Lấy id từ request
+        $validatedData = $request->validate([
+            'month' => 'required',
+            'schoolYear_id' => 'required',
+            'major_id' => 'required',
+        ]);
+
+        $fee = Fees::find($id);
+
+        $fee->month = $validatedData['month'];
+        $fee->schoolYear_id = $validatedData['schoolYear_id'];
+        $fee->major_id = $validatedData['major_id'];
+        $fee->save();
+
+        toastr()->addSuccess('Fee updated successfully.');
+        return redirect()->route('fees');
+    }
+
+
     public function delete($id)
     {
         // Find the Fee record by ID
@@ -53,7 +74,7 @@ class FeeController extends Controller
 
         // Delete the Fee record
         $fee->delete();
-
-        return redirect()->route('fees')->with('success', 'Fee deleted successfully');
+        toastr()->addSuccess('Fee deleted successfully.');
+        return redirect()->route('fees');
     }
 }
