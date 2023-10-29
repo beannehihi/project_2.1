@@ -13,13 +13,14 @@ class SchoolYear extends Model
         'name',
     ];
 
-    public function classes()
-    {
-        return $this->hasMany(Classes::class, 'schoolYear_id', 'id');
-    }
 
     public function fees()
     {
-        return $this->hasMany(Fee::class, 'schoolYear_id', 'id');
+        return $this->hasMany(Fees::class, 'schoolYear_id', 'id');
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'schoolYear_id', 'id');
     }
 }

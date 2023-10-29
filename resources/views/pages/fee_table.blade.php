@@ -82,7 +82,7 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <p class="text-secondary  text-xs font-weight-bold">
-                                                        {{ $fee->total_fee }}<span
+                                                        {{ number_format($fee->total_fee, 0, ',', ',') }}<span
                                                             class="text-uppercase text-success">VND</span> </p>
                                                 </td>
                                             </tr>
@@ -219,7 +219,7 @@
                                 <div class="mb-3 col-md-4">
                                     <label class="form-label">Đợt đóng</label>
                                     <input type="text" name="month" class="form-control border p-2"
-                                        placeholder="Enter date..." value=''>
+                                        placeholder="Enter date..." value='1'>
                                     @error('date')
                                         <p class='text-danger inputerror'>{{ $message }} </p>
                                     @enderror

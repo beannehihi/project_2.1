@@ -1,46 +1,15 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
 
-    <x-navbars.sidebar activePage="Classes"></x-navbars.sidebar>
+    <x-navbars.sidebar activePage="students"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
-        <x-navbars.navs.auth titlePage="Classes"></x-navbars.navs.auth>
+        <x-navbars.navs.auth titlePage="Student Manager"></x-navbars.navs.auth>
         <!-- End Navbar -->
         <div class="container-fluid py-4">
             <div class="row">
 
-                {{-- tag classes --}}
-                <div class="col-3">
-                    <div class="card my-4">
-                        <div class="card-header p-3 pt-2">
-                            <div
-                                class="icon icon-lg icon-shape bg-gradient-warning shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                                <h4 class="mb-0 text-white py-3">{{ $classes->toArray()['name'] }} </h4>
-                            </div>
-                            <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Niên Khóa</p>
-                                <h4 class="mb-0">{{ $classes->toArray()['school_year']['name'] }}</h4>
-                            </div>
-                        </div>
-                        <hr class="dark horizontal my-0">
-                        <div class="card-footer p-3">
-                            <div class="d-flex bd-highlight text-uppercase">
-                                <div class="p-2 bd-highlight text-warning h6">khai giảng:</div>
-                                <div class="p-2 bd-highlight"></div>
-                                <div class="ms-auto p-2 bd-highlight ">
-                                    {{ date('d/m/Y', strtotime($classes->toArray()['created_at'])) }}</div>
-                            </div>
-                            <div class="d-flex bd-highlight text-uppercase">
-                                <div class="p-2 bd-highlight text-info h6">sinh viên:</div>
-                                <div class="p-2 bd-highlight"></div>
-                                <div class="ms-auto p-2 bd-highlight ">{{ $studentCount }}</div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
                 {{-- table student --}}
-                <div class="col-9">
+                <div class="col-12">
                     <div class="card my-4">
                         <div class="card-body px-0 pb-2">
                             <div class="table-responsive p-0">
@@ -48,16 +17,16 @@
                                     <thead>
                                         <div class="px-2" style="display:flex">
                                             <button type="button" id="openModalButton"
-                                                class="btn shadow border border-2" data-bs-toggle="modal"
+                                                class="btn shadow border border-2 mr-4" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal">
                                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                             </button>
-                                            <form action="{{ route('classes', ['id' => $classes->id]) }}" method="GET"
-                                                class="ml-auto">
+
+                                            <form action="{{ route('students') }}" method="GET">
                                                 <div class="position-relative mt-1 mx-12" style="flex: 1">
                                                     <div class="input-group input-group-outline">
-                                                        <input type="text" class="form-control" name="search_text"
-                                                            placeholder="Search by student code..."
+                                                        <input type="text" class="form-control" name="search_term"
+                                                            placeholder="Search phone or student code..."
                                                             style="padding-right: 70px !important">
                                                     </div>
                                                     <button type="submit"
@@ -89,7 +58,7 @@
                                             </th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                major
+                                                Address
                                             </th>
 
                                         </tr>
@@ -106,15 +75,17 @@
                                                         </button>
                                                         <ul class="dropdown-menu border border-1" style="min-width: 5px"
                                                             aria-labelledby="dropdownMenuButton1">
-                                                            <form action="{{ route('classes.delete', $student->id) }}"
+                                                            <form
+                                                                action="{{ route('students_delete', ['id' => $student->id]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <li class="px-2 dropdown-item"><button
-                                                                        class="dropdown-item"
-                                                                        type="submit">Delete</button></li>
+                                                                <li class="px-2 dropdown-item">
+                                                                    <button class="dropdown-item"
+                                                                        type="submit">Delete</button>
+                                                                </li>
                                                             </form>
-                                                            <li class="px-2 " data-bs-toggle="modal"
+                                                            <li class="px-2" data-bs-toggle="modal"
                                                                 data-bs-target="#editModal">
                                                                 <a class="dropdown-item" href="#">Edit</a>
                                                             </li>
@@ -147,10 +118,150 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $student->major->name }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $student->location }}</span>
                                                 </td>
-
                                             </tr>
+
+
+                                            {{-- modal edit --}}
+                                            <div class="modal fade" id="editModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl   ">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="btn-close bg-dark"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form
+                                                            action="{{ route('students_update', ['id' => $student->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="modal-body">
+                                                                <h5>Thông tin sinh viên:</h5>
+                                                                <div class="row">
+                                                                    <div class="mb-3 col-md-3">
+                                                                        <label class="form-label">Mã sinh vien</label>
+                                                                        <input type="text" name="student_code"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter student code..."
+                                                                            value='{{ old('student_code', $student->student_code) }}'
+                                                                            disabled>
+                                                                        @error('student_code')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="mb-3 col-md-3">
+                                                                        <label class="form-label">Name</label>
+                                                                        <input type="text" name="name"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter name..."
+                                                                            value='{{ old('name', $student->name) }}'>
+                                                                        @error('name')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="mb-3 col-md-3">
+                                                                        <label class="form-label">Date of birth</label>
+                                                                        <input type="date" name="date_of_birth"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter date..."
+                                                                            value='{{ old('date_of_birth', $student->date_of_birth) }}'>
+                                                                        @error('date')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="mb-3 col-md-3">
+                                                                        <label class="form-label">Phone</label>
+                                                                        <input type="text" name="phone"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter phone..."
+                                                                            value='{{ old('phone', $student->phone) }}'>
+                                                                        @error('phone')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <input type="hidden" name="password">
+
+                                                                    <div class="mb-3 col-md-3">
+                                                                        <label class="form-label">Location</label>
+                                                                        <input type="text" name="location"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter loaction..."
+                                                                            value='{{ old('location', $student->location) }}'>
+                                                                        @error('Localtion')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="mb-3 col-md-6">
+                                                                        <label class="form-label">Email</label>
+                                                                        <input type="email" name="email"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter email..."
+                                                                            value='{{ old('email', $student->email) }}'>
+                                                                        @error('email')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="mb-3 col-md-4">
+                                                                        <label class="form-label">scholarship</label>
+                                                                        <input type="text" name="scholarship"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Enter học bổng..."
+                                                                            value='{{ old('scholarship', $student->scholarship) }}'>
+                                                                        @error('scholarship')
+                                                                            <p class='text-danger inputerror'>
+                                                                                {{ $message }} </p>
+                                                                        @enderror
+                                                                    </div>
+
+
+
+                                                                    <div class="mb-3 col-md-6 mt-2 d-flex flex-column">
+                                                                        <label class="form-label">Gender</label>
+                                                                        <div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input"
+                                                                                    type="radio" name="gender"
+                                                                                    id="inlineRadio1" value="0"
+                                                                                    {{ old('gender', $student->gender) == 0 ? 'checked' : '' }}>
+                                                                                <label class="form-check-label"
+                                                                                    for="inlineRadio1">Male</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input"
+                                                                                    type="radio" name="gender"
+                                                                                    id="inlineRadio2" value="1"
+                                                                                    {{ old('gender', $student->gender) == 1 ? 'checked' : '' }}>
+                                                                                <label class="form-check-label"
+                                                                                    for="inlineRadio2">Female</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Hủy</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-warning">Lưu</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -171,7 +282,7 @@
                                 <button type="button" class="btn-close bg-dark" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('classes.add', ['class_id', $classes->id]) }}" method="POST">
+                            <form action="{{ route('students_add') }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
                                     <h5>Thông tin sinh viên:</h5>
@@ -258,32 +369,7 @@
 
                                             </div>
                                         </div>
-
-
                                     </div>
-                                    <div class="row mt-4">
-                                        <h5> Lớp và Chuyên ngành:</h5>
-                                        <div class="mb-3 col-md-3">
-                                            <label class="form-label">Class</label>
-                                            <select name="class_id" class="form-select p-2 border border-2"
-                                                aria-label="Default select example">
-                                                <option value="{{ $classes->id }}" selected>{{ $classes->name }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-3">
-                                            <label class="form-label">Major</label>
-                                            <select name="major_id"
-                                                class="form-select p-2 border border-2 form-select-sm rounded-2"
-                                                aria-label=".form-select-sm example">
-                                                <option selected>Choose Major...</option>
-                                                @foreach ($majors as $major)
-                                                    <option value="{{ $major->id }}">{{ $major->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
@@ -291,59 +377,6 @@
                                     <button type="submit" class="btn btn-warning">Lưu</button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="addFeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="modal-body">
-                                    <h5 class="text-uppercase">tạo học phí sinh viên:</h5>
-                                    <form action="tuition.store" method="post">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="mb-3 col-md-6">
-                                                <label class="form-label">Mã sinh sinh viên</label>
-                                                <input type="text" name="student_id"
-                                                    class="form-control border p-2" placeholder="nhập mã sinh viên..."
-                                                    value=''>
-                                                @error('name')
-                                                    <p class='text-danger inputerror'>{{ $message }} </p>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-3 col-md-4">
-                                                <label class="form-label">nhập số đợt</label>
-                                                <input type="number" name="times" class="form-control border p-2"
-                                                    placeholder="nhập số đợt..." value=''>
-                                                @error('name')
-                                                    <p class='text-danger inputerror'>{{ $message }} </p>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-3 col-md-6">
-                                                <label class="form-label">nhập số tiền đóng trước</label>
-                                                <input type="text" name="amount" class="form-control border p-2"
-                                                    placeholder="nhập số tiền..." value=''>
-                                                @error('name')
-                                                    <p class='text-danger inputerror'>{{ $message }} </p>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-mdb-dismiss="modal">đóng</button>
-                                <button type="submit" class="btn btn-primary">lưu</button>
-                            </div>
-                            </form>
-
                         </div>
                     </div>
                 </div>

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('student_code')->nullable();
-            $table->text('img')->nullable();
             $table->string('name')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('phone')->nullable();
@@ -22,20 +21,20 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('location')->nullable();
+            $table->string('scholarship')->nullable();
             $table->smallInteger('gender')->nullable();
             $table->smallInteger('role')->default('3');
 
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('class_id');
-            $table->unsignedBigInteger('major_id');
-            $table->unsignedBigInteger('tuition_fee_id')->nullable();
+            $table->unsignedBigInteger('schoolYear_id')->nullable();
+            $table->unsignedBigInteger('major_id')->nullable();
+
             $table->timestamps();
 
             // Định nghĩa các khóa ngoại
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('class_id')->references('id')->on('classes');
-            $table->foreign('major_id')->references('id')->on('majors');
-            $table->foreign('tuition_fee_id')->references('id')->on('tuition_fees');
+            $table->foreign('major_id')->references('id')->on('majors')->nullable();
+            $table->foreign('schoolYear_id')->references('id')->on('school_years')->nullable();
         });
     }
 

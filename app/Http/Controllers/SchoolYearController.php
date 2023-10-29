@@ -15,19 +15,9 @@ class SchoolYearController extends Controller
     // School year
     public function create()
     {
-        $classes = Classes::all();
+        $schoolYears = SchoolYear::orderBy('created_at', 'desc')->paginate(6);
 
-        $schoolYears = SchoolYear::select('id', 'name')
-            ->selectSub(function ($query) {
-                $query->selectRaw('count(*)')
-                    ->from('classes')
-                    ->whereColumn('schoolYear_id', 'school_years.id')
-                    ->groupBy('schoolYear_id');
-            }, 'total_classes')
-            ->get();
-
-
-        return view('pages.schoolYear_table', compact('schoolYears', 'classes'));
+        return view('pages.schoolYear_table', compact('schoolYears'));
     }
 
     public function add(Request $request)
@@ -67,31 +57,26 @@ class SchoolYearController extends Controller
         $schoolYear->name = $validateData['name'];
         $schoolYear->save();
 
-        return redirect()->route('school_years')->with('success', 'Cập nhật tên schoolYear thành công');
+
+        toastr()->addSuccess('cập nhật chuyên ngành thành công.');
+        return redirect()->route('school_years');
     }
 
-
-    // classes
-    public function addClass(Request $request)
+    public function delete($id)
     {
-        $validateData = $request->validate([
-            'name' => 'required|string|max:255',
-            'schoolYear_id' => 'required',
-        ]);
+        $schoolYear = SchoolYear::find($id);
 
-        $existingClass = Classes::where('name', $validateData['name'])
-            ->where('schoolYear_id', $validateData['schoolYear_id'])
-            ->exists();
-
-        if ($existingClass) {
-            return redirect()->route('school_years')->with('error', 'Lớp đã tồn tại trong năm học này');
+        if (!$schoolYear) {
+            return redirect()->route('school_years')->with('error', 'Không tìm thấy schoolYear');
         }
 
-        Classes::create([
-            'name' => $validateData['name'],
-            'schoolYear_id' => $validateData['schoolYear_id'],
-        ]);
+        if ($schoolYear->students()->count() > 0 || $schoolYear->fees()->count() > 0) {
+            return redirect()->route('school_years')->with('error', 'Không thể xóa schoolYear có liên kết với học sinh hoặc các khoản phí.');
+        }
 
-        return redirect()->route('school_years')->with('success', 'Thêm lớp thành công');
+        $schoolYear->delete();
+
+        toastr()->addSuccess('Xóa schoolYear thành công');
+        return redirect()->route('school_years');
     }
 }

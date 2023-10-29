@@ -1,170 +1,184 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
+
     <x-navbars.sidebar activePage="school_years"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
         <x-navbars.navs.auth titlePage="Niên khóa"></x-navbars.navs.auth>
         <!-- End Navbar -->
-        <div class="container-fluid py-4" style="height-auto">
-            <div class="py-2">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addClassModal">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                </button>
-            </div>
 
-            <div class="row">
-                @foreach ($schoolYears as $index => $schoolYear)
-                    <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4 py-5">
-                        <div class="card">
-                            <div class="card-header p-3 pt-2">
-                                <div
-                                    class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                    <h4 class="mb-0 text-white py-3">{{ $schoolYear->name }}</h4>
-                                </div>
-                                <div class="text-end pt-1">
-                                    @if ($schoolYear->total_classes > 0)
-                                        <button class="btn btn-warning" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#a{{ $index }}" aria-expanded="false"
-                                            aria-controls="a{{ $index }}">
-                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                        </button>
-                                    @else
-                                        <button class="btn btn-warning" type="button" disabled>
-                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                        </button>
-                                    @endif
-                                    <!-- Button modal Update SchoolYear -->
-                                    <button type="button" class="btn border border-1 shadow" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal{{ $index }}">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                                <p class="mb-0 text-xl font-weight-bolder text-warning"><span
-                                        class="text-success text-sm font-weight-bolder">Số Lượng:
-                                    </span>{{ $schoolYear->total_classes ?? 0 }}</p>
-                            </div>
-
-                            <div class="collapse" id="a{{ $index }}">
-                                @foreach ($classes as $class)
-                                    @if ($class->schoolYear_id === $schoolYear->id)
-                                        <div class="card-footer p-3 ">
-                                            <a href="classes/{{ $class->id }}">
-                                                <div class="card card-body p-2 text-center fs-4 mb-2 ">
-                                                    {{ $class->name }}
+        <div class="container-fluid py-4">
+            <div id="data-wrapper">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card my-4">
+                            <div class="card-body px-0 pb-2">
+                                <div class="table-responsive p-0">
+                                    <table class="table align-items-center mb-0 ">
+                                        <thead>
+                                            <div class="px-2" style="display:flex">
+                                                <button type="button" class="btn shadow border border-2"
+                                                    data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                                <div class="position-relative mt-1 mx-12" style="flex: 1">
+                                                    <div class="input-group input-group-outline">
+                                                        <label class="form-label">Search</label>
+                                                        <input type="text" class="form-control"
+                                                            style="padding-right: 70px !important">
+                                                    </div>
+                                                    <button class="btn btn-primary mb-0 position-absolute end-0 top-0"
+                                                        style="border-radius: 0 6px 6px 0"><i class="fa fa-search"
+                                                            aria-hidden="true"></i></button>
                                                 </div>
-                                            </a>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                            <div class="card-footer p-3"></div>
-                        </div>
-                    </div>
-
-                    {{-- Modal update schoolYear --}}
-                    <div class="modal fade" id="exampleModal{{ $index }}" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit liên khóa</h5>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('school_years_update', $schoolYear->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="id" value="{{ $schoolYear->id }}">
-                                        <div class="modal-body">
-                                            <div class="input-group input-group-dynamic mb-4">
-                                                <input type="text" class="form-control" name="name"
-                                                    aria-label="Amount (to the nearest dollar)"
-                                                    value="{{ $schoolYear->name }}">
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary h-4">Cập nhật</button>
-                                        </div>
-                                    </form>
+                                            <tr>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+
+                                                </th>
+
+                                                <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Majors</th>
+                                                <th
+                                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    Create at
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($schoolYears as $schoolYear)
+                                                <tr>
+                                                    <td class="align-middle w-2">
+                                                        <button class="btn border border-1 shadow" type="button"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <i class="fa fa-cog" aria-hidden="true"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu border border-1" style="min-width: 5px"
+                                                            aria-labelledby="dropdownMenuButton1">
+                                                            <form
+                                                                action="   {{ route('school_years_delete', ['id' => $schoolYear->id]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <li class="px-2 dropdown-item"><button
+                                                                        class="dropdown-item"
+                                                                        type="submit">Delete</button></li>
+                                                            </form>
+
+                                                            <li class="px-4 dropdown-item" data-mdb-toggle="modal"
+                                                                data-mdb-target="#editModal">
+                                                                edit
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <p class="text-xs text-uppercase text-secondary mb-0">
+                                                            {{ $schoolYear->name }}</p>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <span
+                                                            class="text-secondary  text-xs font-weight-bold">{{ $schoolYear->created_at }}</span>
+                                                    </td>
+                                                </tr>
+
+                                                {{-- edit --}}
+                                                <div class="modal fade" id="editModal" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="btn-close"
+                                                                    data-mdb-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="modal-body">
+                                                                    <h5 class="text-uppercase">sửa Niên khóa:</h5>
+                                                                    <form action="school_years_update" method="post">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <input type="hidden" name="id"
+                                                                            value="{{ $schoolYear->id }}">
+                                                                        <div class="row">
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label">tên niên
+                                                                                    khóa</label>
+                                                                                <input type="text" name="name"
+                                                                                    class="form-control border p-2"
+                                                                                    placeholder="nhập tên niên khóa..."
+                                                                                    value='{{ $schoolYear->name }}'>
+                                                                                @error('name')
+                                                                                    <p class='text-danger inputerror'>
+                                                                                        {{ $message }} </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-mdb-dismiss="modal">đóng</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">lưu</button>
+                                                            </div>
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Modal Add SchoolYear -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">niên khóa</h5>
-                            <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('school_years_add') }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="input-group input-group-outline my-3">
-                                    <label class="form-label">tên niên khóa </label>
-                                    <input name="name" type="text" class="form-control">
-                                    @error('name')
-                                        <p class='text-danger inputerror'>{{ $message }} </p>
-                                    @enderror
-                                </div>
-
-
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary h-4">Thêm mới</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
-
-            <!-- Modal Add Class -->
-            <div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="addClassModalLabel"
-                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addClassModalLabel">Thêm lớp</h5>
-                            <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('class_add') }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="input-group input-group-outline my-3">
-                                    <label class="form-label">Tên lớp</label>
-                                    <input name="name" type="text" class="form-control">
-                                    @error('name')
-                                        <p class='text-danger inputerror'>{{ $message }} </p>
-                                    @enderror
-                                </div>
-                                <select name="schoolYear_id" class="form-select form-select-lg mb-3"
-                                    aria-label=".form-select-lg example">
-                                    <option selected>Chọn liên khóa</option>
-                                    @foreach ($schoolYears as $year)
-                                        <option value={{ $year->id }}>{{ $year->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Thêm lớp</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="pagination">
+                {{ $schoolYears->links('vendor.pagination.bootstrap-5') }}
             </div>
-
-
         </div>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            <h5 class="text-uppercase">tạo Niên khóa:</h5>
+                            <form action="school_years_add" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label">tên niên khóa</label>
+                                        <input type="text" name="name" class="form-control border p-2"
+                                            placeholder="nhập tên niên khóa..." value=''>
+                                        @error('name')
+                                            <p class='text-danger inputerror'>{{ $message }} </p>
+                                        @enderror
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">đóng</button>
+                        <button type="submit" class="btn btn-primary">lưu</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
     </main>
     <x-plugins></x-plugins>
 

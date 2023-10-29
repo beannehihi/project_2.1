@@ -10,18 +10,21 @@ class Tuition_fee extends Model
     use HasFactory;
 
     protected $fillable = [
-        'payment_fee',
         'times',
+        'fee',
         'fees_id',
+        'student_id',
     ];
 
-    public function student()
-    {
-        return $this->hasMany(Student::class, 'tuition_fee_id', 'id');
-    }
+
 
     public function fees()
     {
         return $this->belongsTo(Fees::class, 'fees_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
     }
 }

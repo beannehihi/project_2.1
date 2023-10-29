@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('tuition_fees', function (Blueprint $table) {
             $table->id();
-            $table->string('payment_fee')->nullable();
-            $table->string('times')->nullable();
-            $table->timestamps();
-
+            $table->smallInteger('times')->nullable();
+            $table->integer('fee')->nullable();;
+            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('fee_id');
+
+            $table->timestamps();
+            $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('fee_id')->references('id')->on('fees');
         });
     }

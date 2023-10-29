@@ -23,14 +23,15 @@ class FeeController extends Controller
     public function add(Request $request)
     {
         $validatedData = $request->validate([
-            'month' => 'required',
             'total_fee' => 'required',
             'schoolYear_id' => 'required',
             'major_id' => 'required',
         ]);
 
+        $month = $request->input('month', 1);
+
         $newFee = new Fees([
-            'month' => $validatedData['month'],
+            'month' => $month,
             'total_fee' => $validatedData['total_fee'],
             'schoolYear_id' => $validatedData['schoolYear_id'],
             'major_id' => $validatedData['major_id'],

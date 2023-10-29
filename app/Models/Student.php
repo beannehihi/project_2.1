@@ -11,7 +11,6 @@ class Student extends Model
 
     protected $fillable = [
         'student_code',
-        'img',
         'name',
         'date_of_birth',
         'phone',
@@ -19,12 +18,12 @@ class Student extends Model
         'email_verified_at',
         'password',
         'location',
+        'scholarship',
         'gender',
         'role',
         'user_id',
-        'class_id',
+        'schoolYear_id',
         'major_id',
-        'tuition_fee_id',
     ];
 
     public function user()
@@ -32,18 +31,13 @@ class Student extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function studentClass()
-    {
-        return $this->belongsTo(Classes::class, 'class_id');
-    }
-
     public function major()
     {
         return $this->belongsTo(Major::class, 'major_id');
     }
 
-    public function tuitionFee()
+    public function tuitionFees()
     {
-        return $this->belongsTo(TuitionFee::class, 'tuition_fee_id');
+        return $this->hasMany(Tuition_fee::class);
     }
 }

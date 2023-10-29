@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Models\Fees;
 use App\Models\Major;
+use App\Models\SchoolYear;
 use App\Models\Student;
+use App\Models\Tuition_fee;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -12,10 +15,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassesController extends Controller
 {
+
     public function create($id, Request $request)
     {
         $searchText = $request->input('search_text');
         $classes = Classes::with('schoolYear', 'students')->find($id);
+
+        $initialStudentCount = Student::where('class_id', $id)->count();
 
         $studentsQuery = Student::where('class_id', $id);
 
@@ -26,23 +32,24 @@ class ClassesController extends Controller
         $students = $studentsQuery->paginate(7);
         $majors = Major::all();
 
-        $studentCount = $students->total();
+        $studentCount = $initialStudentCount;
 
         return view('pages.classes_table', compact('classes', 'students', 'studentCount', 'majors', 'searchText'));
     }
+
 
 
     public function add(Request $request)
     {
         $validatedData = $request->validate([
             'student_code' => 'required',
-            'img' => 'nullable',
             'name' => 'nullable',
             'date_of_birth' => 'nullable',
             'phone' => 'nullable',
             'email' => 'required|email|unique:students,email',
             'password' => 'nullable',
             'location' => 'nullable',
+            'scholarship' => 'nullable',
             'gender' => 'nullable',
             'role' => 'nullable',
             'user_id' => 'nullable',
@@ -56,13 +63,13 @@ class ClassesController extends Controller
         $password = $validatedData['password'] ?? $student_code;
         $student = new Student([
             'student_code' => $student_code,
-            'img' => $validatedData['img'],
             'name' => $validatedData['name'],
             'date_of_birth' => $validatedData['date_of_birth'],
             'phone' => $validatedData['phone'],
             'email' => $validatedData['email'],
             'password' => $password,
             'location' => $validatedData['location'],
+            'scholarship' => $validatedData['scholarship'],
             'gender' => $validatedData['gender'],
             'role' => $role,
             'user_id' => $user_id,
@@ -76,6 +83,8 @@ class ClassesController extends Controller
 
         return redirect()->back();
     }
+
+
 
     public function delete($id)
     {

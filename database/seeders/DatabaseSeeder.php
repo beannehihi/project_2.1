@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->count(2)->create();
         SchoolYear::factory()->count(10)->create();
-        Classes::factory()->count(20)->create();
         Major::factory()->count(20)->create();
         Fees::factory()->count(10)->create();
         Student::factory()->count(50)->create();
