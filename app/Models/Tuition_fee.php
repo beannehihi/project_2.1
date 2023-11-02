@@ -20,7 +20,7 @@ class Tuition_fee extends Model
 
     public function fees()
     {
-        return $this->belongsTo(Fees::class, 'fees_id');
+        return $this->belongsTo(Fees::class, 'fee_id');
     }
 
     public function student()

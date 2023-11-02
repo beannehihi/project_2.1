@@ -10,33 +10,34 @@
 
                 {{-- table student --}}
                 <div class="col-12">
-                    <div class="card my-4">
+                    <div class="input-group w-30">
+                        <div class="px-4">
+                            <button type="button" id="openModalButton" class="btn shadow border border-2 mr-4"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <div>
+
+                        </div>
+                        <form action="{{ route('students') }}" method="GET">
+                            <div class="d-flex">
+                                <input type="search" name="search_term" class="form-control rounded"
+                                    placeholder="Search" aria-label="Search" aria-describedby="search-addon"
+                                    style="width: 250px ; height: 37px;" />
+                                <button type="submit" class="btn btn-outline-primary text-primary"
+                                    style="height: 35px"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
                         <div class="card-body px-0 pb-2">
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0 ">
                                     <thead>
-                                        <div class="px-2" style="display:flex">
-                                            <button type="button" id="openModalButton"
-                                                class="btn shadow border border-2 mr-4" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </button>
 
-                                            <form action="{{ route('students') }}" method="GET">
-                                                <div class="position-relative mt-1 mx-12" style="flex: 1">
-                                                    <div class="input-group input-group-outline">
-                                                        <input type="text" class="form-control" name="search_term"
-                                                            placeholder="Search phone or student code..."
-                                                            style="padding-right: 70px !important">
-                                                    </div>
-                                                    <button type="submit"
-                                                        class="btn btn-primary mb-0 position-absolute end-0 top-0"
-                                                        style="border-radius: 0 6px 6px 0">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
                                         <tr>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -64,7 +65,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($students as $student)
+                                        @foreach ($students as $index => $student)
                                             <tr>
                                                 <td class="align-middle" style="width: 1px">
                                                     <div>
@@ -86,7 +87,7 @@
                                                                 </li>
                                                             </form>
                                                             <li class="px-2" data-bs-toggle="modal"
-                                                                data-bs-target="#editModal">
+                                                                data-bs-target="#editModal_{{ $index }}">
                                                                 <a class="dropdown-item" href="#">Edit</a>
                                                             </li>
                                                         </ul>
@@ -98,14 +99,11 @@
                                                         {{ $student->student_code }}
                                                     </p>
                                                 </td>
-
-
                                                 <td>
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm">{{ $student->name }}</h6>
                                                         <p class="text-xs text-secondary mb-0">{{ $student->email }}
                                                         </p>
-
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
@@ -114,7 +112,7 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $student->date_of_birth }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ \Carbon\Carbon::parse($student->date_of_birth)->format('d/m/Y') }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
@@ -124,9 +122,9 @@
 
 
                                             {{-- modal edit --}}
-                                            <div class="modal fade" id="editModal" tabindex="-1"
+                                            <div class="modal fade" id="editModal_{{ $index }}" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-xl   ">
+                                                <div class="modal-dialog modal-xl">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <button type="button" class="btn-close bg-dark"
@@ -137,98 +135,60 @@
                                                             method="POST">
                                                             @csrf
                                                             @method('PUT')
+
                                                             <div class="modal-body">
                                                                 <h5>Thông tin sinh viên:</h5>
                                                                 <div class="row">
                                                                     <div class="mb-3 col-md-3">
-                                                                        <label class="form-label">Mã sinh vien</label>
+                                                                        <label class="form-label">Mã sinh viên</label>
                                                                         <input type="text" name="student_code"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter student code..."
-                                                                            value='{{ old('student_code', $student->student_code) }}'
+                                                                            placeholder="Nhập mã sinh viên..."
+                                                                            value="{{ $student->student_code }}"
                                                                             disabled>
-                                                                        @error('student_code')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
                                                                     </div>
-
                                                                     <div class="mb-3 col-md-3">
                                                                         <label class="form-label">Name</label>
                                                                         <input type="text" name="name"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter name..."
-                                                                            value='{{ old('name', $student->name) }}'>
-                                                                        @error('name')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
+                                                                            placeholder="Nhập tên..."
+                                                                            value="{{ $student->name }}">
                                                                     </div>
-
                                                                     <div class="mb-3 col-md-3">
                                                                         <label class="form-label">Date of birth</label>
                                                                         <input type="date" name="date_of_birth"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter date..."
-                                                                            value='{{ old('date_of_birth', $student->date_of_birth) }}'>
-                                                                        @error('date')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
+                                                                            placeholder="Nhập ngày sinh..."
+                                                                            value="{{ $student->date_of_birth }}">
                                                                     </div>
-
                                                                     <div class="mb-3 col-md-3">
                                                                         <label class="form-label">Phone</label>
                                                                         <input type="text" name="phone"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter phone..."
-                                                                            value='{{ old('phone', $student->phone) }}'>
-                                                                        @error('phone')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
+                                                                            placeholder="Nhập số điện thoại..."
+                                                                            value="{{ $student->phone }}">
                                                                     </div>
-
-                                                                    <input type="hidden" name="password">
-
                                                                     <div class="mb-3 col-md-3">
                                                                         <label class="form-label">Location</label>
                                                                         <input type="text" name="location"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter loaction..."
-                                                                            value='{{ old('location', $student->location) }}'>
-                                                                        @error('Localtion')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
+                                                                            placeholder="Nhập địa chỉ..."
+                                                                            value="{{ $student->location }}">
                                                                     </div>
-
                                                                     <div class="mb-3 col-md-6">
                                                                         <label class="form-label">Email</label>
                                                                         <input type="email" name="email"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter email..."
-                                                                            value='{{ old('email', $student->email) }}'>
-                                                                        @error('email')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
+                                                                            placeholder="Nhập email..."
+                                                                            value="{{ $student->email }}">
                                                                     </div>
-
                                                                     <div class="mb-3 col-md-4">
-                                                                        <label class="form-label">scholarship</label>
+                                                                        <label class="form-label">Scholarship</label>
                                                                         <input type="text" name="scholarship"
                                                                             class="form-control border p-2"
-                                                                            placeholder="Enter học bổng..."
-                                                                            value='{{ old('scholarship', $student->scholarship) }}'>
-                                                                        @error('scholarship')
-                                                                            <p class='text-danger inputerror'>
-                                                                                {{ $message }} </p>
-                                                                        @enderror
+                                                                            placeholder="Nhập số học bổng..."
+                                                                            value="{{ $student->scholarship }}">
                                                                     </div>
-
-
-
                                                                     <div class="mb-3 col-md-6 mt-2 d-flex flex-column">
                                                                         <label class="form-label">Gender</label>
                                                                         <div>
@@ -236,7 +196,7 @@
                                                                                 <input class="form-check-input"
                                                                                     type="radio" name="gender"
                                                                                     id="inlineRadio1" value="0"
-                                                                                    {{ old('gender', $student->gender) == 0 ? 'checked' : '' }}>
+                                                                                    {{ $student->gender == 0 ? 'checked' : '' }}>
                                                                                 <label class="form-check-label"
                                                                                     for="inlineRadio1">Male</label>
                                                                             </div>
@@ -244,7 +204,7 @@
                                                                                 <input class="form-check-input"
                                                                                     type="radio" name="gender"
                                                                                     id="inlineRadio2" value="1"
-                                                                                    {{ old('gender', $student->gender) == 1 ? 'checked' : '' }}>
+                                                                                    {{ $student->gender == 1 ? 'checked' : '' }}>
                                                                                 <label class="form-check-label"
                                                                                     for="inlineRadio2">Female</label>
                                                                             </div>
@@ -268,7 +228,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pagination">
+                    <div class="pagination py-2">
                         {{ $students->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 </div>

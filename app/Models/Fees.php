@@ -20,7 +20,7 @@ class Fees extends Model
 
     public function tuition_fee()
     {
-        return $this->hasMany(Tuition_fee::class, 'fees_id', 'id');
+        return $this->hasMany(Tuition_fee::class);
     }
 
     public function schoolYear()

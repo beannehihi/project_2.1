@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('month')->nullable();
-            $table->string('total_fee')->nullable();
+            $table->bigInteger('total_fee')->nullable();
 
 
             $table->unsignedBigInteger('schoolYear_id');
