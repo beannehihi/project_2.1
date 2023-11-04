@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\StudentImport;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -25,6 +27,35 @@ class StudentController extends Controller
 
         return view('pages.student', compact('students', 'searchTerm'));
     }
+
+
+    public function import(Request $request)
+    {
+        try {
+            $user_id = Auth::id();
+
+            session(['user_id' => $user_id]);
+
+            $file = $request->file('importExcel');
+            $data = Excel::toArray(new StudentImport(), $file);
+
+            $emails = collect($data)->flatten(1)->pluck('email')->toArray();
+
+            $existingEmails = Student::whereIn('email', $emails)->pluck('email')->toArray();
+
+            if (!empty($existingEmails)) {
+                toastr()->addError('email đang bị trùng');
+            } else {
+                Excel::import(new StudentImport(), $file);
+                toastr()->addSuccess('Thêm sinh viên thành công.');
+            }
+        } catch (\Exception $e) {
+            toastr()->error('Đã xảy ra lỗi trong quá trình nhập dữ liệu.' . $e->getMessage());
+        }
+
+        return redirect()->back();
+    }
+
 
 
     public function add(Request $request)

@@ -17,7 +17,7 @@
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <form action="{{ route('tuition_search') }}" method="GET">
+                        <form action="{{ route('tuition') }}" method="GET">
                             <div class="d-flex">
                                 <input type="search" name="student_code" class="form-control rounded"
                                     placeholder="Search" aria-label="Search" aria-describedby="search-addon"

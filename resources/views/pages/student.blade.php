@@ -11,16 +11,24 @@
                 {{-- table student --}}
                 <div class="col-12">
                     <div class="input-group w-30">
-                        <div class="px-4">
-                            <button type="button" id="openModalButton" class="btn shadow border border-2 mr-4"
+                        <div class="px-3">
+                            <button type="button" id="openModalButton" class="btn btn-light shadow border border-2 mr-4"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </button>
                         </div>
 
-                        <div>
+                        <form id="form-submit-excel" action="{{ route('students_import') }}" method="POST"
+                            enctype="multipart/form-data" class="me-4">
+                            @csrf
+                            <input onchange="document.getElementById('form-submit-excel').submit()" id="file"
+                                type="file" name="importExcel" hidden>
+                            <button onclick="document.getElementById('file').click()" type="button"
+                                class="btn btn-light shadow border border-2 mr-4">
+                                <i class="fa fa-upload" aria-hidden="true"></i>
+                            </button>
+                        </form>
 
-                        </div>
                         <form action="{{ route('students') }}" method="GET">
                             <div class="d-flex">
                                 <input type="search" name="search_term" class="form-control rounded"

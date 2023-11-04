@@ -11,14 +11,26 @@ use Illuminate\Support\Facades\DB;
 
 class TuitionController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
         $fees = Fees::all();
 
-        $tuitionFees = Tuition_fee::with('student')->paginate(7);
+        // Lấy giá trị từ input search theo 'student_code'
+        $search = $request->input('student_code');
+
+        // Nếu giá trị search không tồn tại hoặc rỗng, hiển thị toàn bộ dữ liệu
+        if (empty($search)) {
+            $tuitionFees = Tuition_fee::with('student')->paginate(7);
+        } else {
+            // Tìm kiếm dựa trên 'student_code'
+            $tuitionFees = Tuition_fee::whereHas('student', function ($query) use ($search) {
+                $query->where('student_code', 'LIKE', "%$search%");
+            })->with('student')->paginate(7);
+        }
 
         return view('pages.tuition', compact('fees', 'tuitionFees'));
     }
+
 
     public function store(Request $request)
     {
@@ -70,7 +82,7 @@ class TuitionController extends Controller
                     $tuitionFee->fee_id = $validatedData['fee_id'];
                     $tuitionFee->fee = $validatedData['fee'];
                     $tuitionFee->save();
-
+                    $tuitionFee->touch();
                     return redirect()->route('tuition')->with('success', 'Thông tin học phí đã được cập nhật!');
                 } else {
                     return back()->with('error', 'Không tìm thấy thông tin sinh viên với mã ' . $validatedData['student_code']);
@@ -80,33 +92,6 @@ class TuitionController extends Controller
             }
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Đã xảy ra lỗi. Không thể cập nhật học phí: ' . $e->getMessage());
-        }
-    }
-
-    public function search(Request $request)
-    {
-        $validatedData = $request->validate([
-            'student_code' => 'required|exists:students,student_code'
-        ]);
-
-        try {
-            $studentCode = $validatedData['student_code'];
-
-            $tuitionFees = Tuition_fee::with('student')
-                ->whereHas('student', function ($query) use ($studentCode) {
-                    $query->where('student_code', $studentCode);
-                })
-                ->get();
-
-            if ($tuitionFees->isNotEmpty()) {
-                $fees = Fees::all();
-
-                return view('pages.tuition', compact('fees', 'tuitionFees'));
-            } else {
-                return back()->with('error', 'Không tìm thấy học phí cho mã sinh viên ' . $studentCode);
-            }
-        } catch (\Exception $e) {
-            return back()->with('error', 'Đã xảy ra lỗi khi tìm kiếm theo mã sinh viên: ' . $e->getMessage());
         }
     }
 }

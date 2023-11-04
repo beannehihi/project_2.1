@@ -94,6 +94,10 @@ class FeeController extends Controller
             return redirect()->route('fees')->with('error', 'Fee not found');
         }
 
+        if ($fee->tuition_fee()->exists()) {
+            return redirect()->route('fees')->with('error', 'Cannot delete this fee because it is associated with tuition fees.');
+        }
+
         $fee->delete();
 
         return redirect()->route('fees')->with('success', 'Fee deleted successfully.');

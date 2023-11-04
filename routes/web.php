@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('students/update/{id}', [StudentController::class, 'update'])->name('students_update');
     Route::delete('students/delete/{id}', [StudentController::class, 'delete'])->name('students_delete');
 
+    Route::post('students/import', [StudentController::class, 'import'])->name('students_import');
+
     Route::get('fees', [FeeController::class, 'create'])->name('fees');
     Route::post('fees/add', [FeeController::class, 'add'])->name('fees_add');
     Route::put('fees/update', [FeeController::class, 'update'])->name('fees_update');
@@ -72,7 +74,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('tuition', [TuitionController::class, 'create'])->name('tuition');
     Route::post('tuition_add', [TuitionController::class, 'store'])->name('tuition_add');
     Route::put('tuition_update/{id}', [TuitionController::class, 'update'])->name('tuition_update');
-    Route::get('tuition_search', [TuitionController::class, 'search'])->name('tuition_search');
 
     Route::get('user-management', function () {
         return view('pages.user.management');

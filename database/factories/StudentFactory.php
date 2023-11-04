@@ -23,6 +23,8 @@ class StudentFactory extends Factory
     public function definition(): array
     {
 
+
+
         $studentCode = 'BKC-' . mt_rand(1000, 9999);
         return [
             'student_code' => $studentCode, // Mã sinh viên ngẫu nhiên từ 1000 đến 9999
@@ -36,8 +38,8 @@ class StudentFactory extends Factory
             'gender' => $this->faker->randomElement(['0', '1']), // Giới tính ngẫu nhiên
             'role' => '3', // Vai trò mặc định
             'user_id' => User::inRandomOrder()->first()->id,
-            'major_id' => Major::inRandomOrder()->first()->id,
-            'schoolYear_id' => SchoolYear::inRandomOrder()->first()->id,
+            'major_id' => null,
+            'schoolYear_id' => null,
             'created_at' => now(),
             'updated_at' => now(),
         ];
