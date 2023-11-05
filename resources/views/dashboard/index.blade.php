@@ -50,7 +50,7 @@
                                 <i class="material-icons">person</i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Sô Lượng liên Khóa</p>
+                                <p class="text-sm mb-0 text-capitalize">Số Lượng liên Khóa</p>
                                 <h4 class="mb-0">{{ $schoolYearCount }}</h4>
                             </div>
                         </div>
@@ -91,21 +91,28 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const ctx = document.getElementById('myChart');
+        const chartData = @json($chartData);
 
+        const ctx = document.getElementById('myChart');
         new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                    label: 'Nợ Phí',
-                    data: [65, 59, 80, 81, 26, 55, 40],
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                }]
-            },
+            type: 'bar', // Loại biểu đồ, có thể là 'bar', 'line', etc.
+            data: chartData, // Sử dụng dữ liệu từ controller
             options: {
-                indexAxis: 'y',
+                indexAxis: 'y', // Chọn trục cho biểu đồ cột nằm ngang
+                scales: {
+                    y: {
+                        beginAtZero: true // Yêu cầu trục y bắt đầu từ 0
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tỉ lệ sinh viên nợ học phí'
+                    }
+                }
             }
         });
     </script>

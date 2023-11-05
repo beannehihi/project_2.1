@@ -232,7 +232,7 @@
                                     <div class="mb-3 col-md-3">
                                         <label class="form-label">Lần đóng</label>
                                         <input type="number" name="times" class="form-control border p-2"
-                                            placeholder="Nhập lần đóng..." value=''>
+                                            placeholder="Nhập lần đóng..." value='1'>
                                         @error('times')
                                             <p class='text-danger inputerror'>{{ $message }} </p>
                                         @enderror
