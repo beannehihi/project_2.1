@@ -91,10 +91,11 @@
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center text-xs w-5 ">
-                                                <!-- Button trigger modal -->
+                                                <!-- Check if the times equals 30 to disable the button -->
                                                 <button type="button" class="btn btn-primary mb-0"
                                                     data-mdb-toggle="modal"
-                                                    data-mdb-target="#editModal_{{ $index }}">
+                                                    data-mdb-target="#editModal_{{ $index }}"
+                                                    {{ $tuition->times == 30 ? 'disabled' : '' }}>
                                                     <span>Edit Fee</span>
                                                 </button>
                                             </td>
@@ -105,7 +106,8 @@
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-xl">
                                                 <div class="modal-content">
-                                                    <form action="{{ route('tuition_update', ['id' => $tuition->id]) }}"
+                                                    <form
+                                                        action="{{ route('tuition_update', ['id' => $tuition->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
