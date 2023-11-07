@@ -69,14 +69,14 @@
                     <div class="card z-index-2 ">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                             <div class="bg-gradient shadow-secondary  border-radius-lg py-3 pe-1">
-                                <div class="chart text-white" style="height: 300px">
+                                <div class="chart text-white" style="height:auto">
                                     <canvas id="myChart"></canvas>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <h6 class="mb-0 ">Thống kê</h6>
-                            <p class="text-sm ">Tỉ lệ sinh viên nợ học phí của mỗi đợ<tt></tt></p>
+                            <p class="text-sm ">Tỉ lệ sinh viên nợ học phí của mỗi niên khóa</p>
                             <hr class="dark horizontal">
 
                         </div>

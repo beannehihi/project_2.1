@@ -158,17 +158,20 @@ class StudentController extends Controller
 
 
 
-
     public function delete($id)
     {
         if (Auth::check()) {
-            $student = Student::find($id);
+            $student = Student::with('tuition_fees')->find($id);
 
             if ($student) {
+                // Kiểm tra xem sinh viên có bất kỳ khoản học phí nào không
+                if ($student->tuition_fees->isNotEmpty()) {
+                    toastr()->addError('Sinh viên này đang có các khoản học phí liên quan và không thể xóa.');
+                    return redirect()->route('students');
+                }
+
                 $student->delete();
-
                 toastr()->addSuccess('Xóa sinh viên thành công.');
-
                 return redirect()->route('students');
             } else {
                 toastr()->addError('Không tìm thấy sinh viên để xóa.');

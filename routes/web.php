@@ -74,6 +74,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('tuition', [TuitionController::class, 'create'])->name('tuition');
     Route::post('tuition_add', [TuitionController::class, 'store'])->name('tuition_add');
     Route::put('tuition_update/{id}', [TuitionController::class, 'update'])->name('tuition_update');
+    Route::get('/tuition/print/{id}', [TuitionController::class, 'printReceipt'])->name('tuition.printReceipt');
+
 
     Route::get('user-management', function () {
         return view('pages.user.management');

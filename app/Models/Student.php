@@ -36,7 +36,7 @@ class Student extends Model
         return $this->belongsTo(Major::class, 'major_id');
     }
 
-    public function tuitionFees()
+    public function tuition_fees()
     {
         return $this->hasMany(Tuition_fee::class);
     }

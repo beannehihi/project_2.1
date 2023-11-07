@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classes;
 use App\Models\Fees;
 use App\Models\Student;
 use App\Models\Tuition_fee;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use PDF;
 
 class TuitionController extends Controller
 {
@@ -93,5 +92,15 @@ class TuitionController extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Đã xảy ra lỗi. Không thể cập nhật học phí: ' . $e->getMessage());
         }
+    }
+
+    public function printReceipt($id)
+    {
+        $tuitionFee = Tuition_fee::with(['student', 'fees'])->findOrFail($id);
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('pages.print', ['tuitionFee' => $tuitionFee]);
+
+        return $pdf->download('receipt.pdf');
     }
 }

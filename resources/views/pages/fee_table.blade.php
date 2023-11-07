@@ -67,7 +67,7 @@
                                                                     type="submit">Delete</button></li>
                                                         </form>
 
-                                                        <li class="px-2 " data-bs-toggle="modal"
+                                                        <li class="px-2 dropdown-item " data-bs-toggle="modal"
                                                             data-bs-target="#editModal_{{ $index }}"><button
                                                                 class="dropdown-item " href="#">Edit</button>
                                                         </li>

@@ -35,6 +35,8 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             mã sinh viên</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
@@ -57,12 +59,17 @@
                                 <tbody>
                                     @foreach ($tuitionFees as $index => $tuition)
                                         <tr>
+                                            <td style="width: 1px;">
+                                                <div class="align-middle text-center text-xs w-5">
+                                                    <a href="{{ route('tuition.printReceipt', ['id' => $tuition->id]) }}"
+                                                        type="button" class="btn shadow border border-2"><i
+                                                            class="fa fa-print" aria-hidden="true"></i></a>
+                                                </div>
+                                            </td>
                                             <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-xs">{{ $tuition->student->student_code }}
-                                                        </h6>
-                                                    </div>
+                                                <div class="justify-content-center">
+                                                    <h6 class="mb-0 text-xs">{{ $tuition->student->student_code }}
+                                                    </h6>
                                                 </div>
                                             </td>
                                             <td>
@@ -96,7 +103,8 @@
                                                     data-mdb-toggle="modal"
                                                     data-mdb-target="#editModal_{{ $index }}"
                                                     {{ $tuition->times == 30 ? 'disabled' : '' }}>
-                                                    <span>Edit Fee</span>
+                                                    <span><i class="fa fa-pencil-square-o"
+                                                            aria-hidden="true"></i></span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -202,10 +210,6 @@
             </div>
         </div>
 
-
-
-
-
         {{-- add tuition fee --}}
         <div class="modal fade" id="addFeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -270,6 +274,7 @@
                 </div>
             </div>
         </div>
+
 
 
     </main>
