@@ -152,8 +152,7 @@
                                                                         <input type="text" name="student_code"
                                                                             class="form-control border p-2"
                                                                             placeholder="Nhập mã sinh viên..."
-                                                                            value="{{ $student->student_code }}"
-                                                                            disabled>
+                                                                            value="{{ $student->student_code }}">
                                                                     </div>
                                                                     <div class="mb-3 col-md-3">
                                                                         <label class="form-label">Name</label>
@@ -190,14 +189,7 @@
                                                                             placeholder="Nhập email..."
                                                                             value="{{ $student->email }}">
                                                                     </div>
-                                                                    <div class="mb-3 col-md-4">
-                                                                        <label class="form-label">Scholarship</label>
-                                                                        <input type="text" name="scholarship"
-                                                                            class="form-control border p-2"
-                                                                            placeholder="Nhập số học bổng..."
-                                                                            value="{{ $student->scholarship }}">
-                                                                    </div>
-                                                                    <div class="mb-3 col-md-6 mt-2 d-flex flex-column">
+                                                                    <div class="mb-3 col-md-3 mt-2 d-flex flex-column">
                                                                         <label class="form-label">Gender</label>
                                                                         <div>
                                                                             <div class="form-check form-check-inline">
@@ -219,6 +211,43 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="row">
+                                                                    <h5>Niên khóa & Chuyên Ngành:</h5>
+                                                                    <div class="mb-3 col-md-4">
+                                                                        <label class="form-label">Scholarship</label>
+                                                                        <input type="text" name="scholarship"
+                                                                            class="form-control border p-2"
+                                                                            placeholder="Nhập số học bổng..."
+                                                                            value="{{ $student->scholarship }}">
+                                                                    </div>
+
+                                                                    <div class="mb-3 col-md-5">
+                                                                        <label for="fee-select"
+                                                                            class="form-label">Niên khóa & Chuyên
+                                                                            ngành</label>
+                                                                        <input class="form-control mb-2"
+                                                                            id="fee-search" type="text"
+                                                                            placeholder="Search...">
+                                                                        <select class="form-select form-select-sm"
+                                                                            name="fee_id" id="fee-select"
+                                                                            size="5"
+                                                                            aria-label=".form-select-sm example">
+                                                                            @foreach ($fees as $fee)
+                                                                                <option value="{{ $fee->id }}"
+                                                                                    {{ $student->fee_id == $fee->id ? 'selected' : '' }}>
+                                                                                    Niên khóa:
+                                                                                    {{ $fee->schoolYear->name }} -
+                                                                                    Chuyên ngành:
+                                                                                    {{ $fee->major->name }} - tổng
+                                                                                    tiền:
+                                                                                    {{ number_format($fee->total_fee, 0, ',', ',') }}
+                                                                                    VND
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
@@ -312,16 +341,8 @@
                                             @enderror
                                         </div>
 
-                                        <div class="mb-3 col-md-4">
-                                            <label class="form-label">scholarship</label>
-                                            <input type="text" name="scholarship" class="form-control border p-2"
-                                                placeholder="Enter học bổng..." value=''>
-                                            @error('scholarship')
-                                                <p class='text-danger inputerror'>{{ $message }} </p>
-                                            @enderror
-                                        </div>
 
-                                        <div class="mb-3 col-md-6 mt-2 d-flex flex-column">
+                                        <div class="mb-3 col-md-3 mt-2 d-flex flex-column">
                                             <label class="form-label">Gender</label>
                                             <div>
                                                 <div class="form-check form-check-inline">
@@ -334,8 +355,36 @@
                                                         id="inlineRadio2" value="1">
                                                     <label class="form-check-label" for="inlineRadio2">Female</label>
                                                 </div>
-
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <h5>Niên khóa & Chuyên Ngành:</h5>
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label">scholarship</label>
+                                            <input type="text" name="scholarship" class="form-control border p-2"
+                                                placeholder="Enter học bổng..." value=''>
+                                            @error('scholarship')
+                                                <p class='text-danger inputerror'>{{ $message }} </p>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-3 col-md-5">
+                                            <label for="fee-select" class="form-label">Niên khóa & Chuyên
+                                                ngành</label>
+                                            <input class="form-control mb-2" id="fee-search" type="text"
+                                                placeholder="Search...">
+                                            <select class="form-select form-select-sm" name="fee_id" id="fee-select"
+                                                size="5" aria-label=".form-select-sm example">
+                                                @foreach ($fees as $fee)
+                                                    <option value="{{ $fee->id }}">
+                                                        {{ $fee->schoolYear->name }} - Chuyên ngành:
+                                                        {{ $fee->major->name }} - tổng tiền:
+                                                        {{ number_format($fee->total_fee, 0, ',', ',') }} VND
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -351,6 +400,25 @@
             </div>
 
         </div>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var searchInput = document.getElementById('fee-search');
+                var feeSelect = document.getElementById('fee-select');
+
+                searchInput.addEventListener('input', function() {
+                    var searchTerm = searchInput.value.toLowerCase();
+
+                    for (var i = 0; i < feeSelect.options.length; i++) {
+                        var optionText = feeSelect.options[i].text.toLowerCase();
+                        var isMatch = optionText.indexOf(searchTerm) > -1;
+                        feeSelect.options[i].style.display = isMatch ? '' : 'none';
+                    }
+                });
+            });
+        </script>
+
     </main>
     <x-plugins></x-plugins>
 

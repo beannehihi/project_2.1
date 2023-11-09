@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\StudentImport;
+use App\Models\Fees;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,9 @@ class StudentController extends Controller
     //
     public function create(Request $request)
     {
+
+        $fees = Fees::all();
+
         $searchTerm = $request->input('search_term');
         if (!empty($searchTerm)) {
 
@@ -25,7 +29,7 @@ class StudentController extends Controller
             $students = Student::orderBy('created_at', 'desc')->paginate(6);
         }
 
-        return view('pages.student', compact('students', 'searchTerm'));
+        return view('pages.student', compact('students', 'searchTerm', 'fees'));
     }
 
 
@@ -73,6 +77,7 @@ class StudentController extends Controller
                 'gender' => 'nullable',
                 'role' => 'nullable',
                 'user_id' => 'nullable',
+                'fee_id' => 'required',
             ]);
 
             $student_code = 'BKC-' . $validatedData['student_code'];
@@ -94,6 +99,7 @@ class StudentController extends Controller
                 'gender' => $validatedData['gender'],
                 'role' => $role,
                 'user_id' => $user_id,
+                'fee_id' => $validatedData['fee_id'],
             ]);
 
             $student->save();
@@ -124,6 +130,7 @@ class StudentController extends Controller
                     'location' => 'nullable',
                     'scholarship' => 'nullable',
                     'gender' => 'nullable',
+                    'fee_id' => 'nullable',
                 ]);
 
                 $student->name = $validatedData['name'];
@@ -133,6 +140,7 @@ class StudentController extends Controller
                 $student->location = $validatedData['location'];
                 $student->scholarship = $validatedData['scholarship'];
                 $student->gender = $validatedData['gender'];
+                $student->fee_id = $validatedData['fee_id'];
 
                 if (!empty($validatedData['password'])) {
                     $student->password = $validatedData['password'];

@@ -22,8 +22,8 @@ class Student extends Model
         'gender',
         'role',
         'user_id',
-        'schoolYear_id',
-        'major_id',
+        'fee_id',
+
     ];
 
     public function user()
@@ -39,5 +39,10 @@ class Student extends Model
     public function tuition_fees()
     {
         return $this->hasMany(Tuition_fee::class);
+    }
+
+    public function fees()
+    {
+        return $this->belongsTo(Fees::class, 'fee_id', 'id');
     }
 }

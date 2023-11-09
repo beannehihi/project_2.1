@@ -43,9 +43,9 @@
                                                 {{ auth()->user()->name }}
                                             </h5>
                                             @if (auth()->user()->role == 1)
-                                                CEO / Admin
+                                                CEO / Giáo vụ
                                             @elseif(auth()->user()->role == 2)
-                                                CEO / Employee
+                                                CEO / Kế toán
                                             @endif
                                         </div>
                                     </div>

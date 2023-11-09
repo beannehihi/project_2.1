@@ -9,12 +9,7 @@ class Tuition_fee extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'times',
-        'fee',
-        'fees_id',
-        'student_id',
-    ];
+    protected $fillable = ['student_id', 'fee_id', 'times', 'fee'];
 
 
 

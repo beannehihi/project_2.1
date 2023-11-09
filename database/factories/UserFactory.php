@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'password' => ('123456'), // You can change 'password' to a desired default password
             'email_verified_at' => now(),
             'about' => $this->faker->text,
-            'role' => 2, // Default role
+            'role' => $this->faker->randomElement([1, 2]), // Default role
             'remember_token' => Str::random(10),
             'created_at' => now(),
             'updated_at' => now(),

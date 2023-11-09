@@ -26,15 +26,13 @@ return new class extends Migration
             $table->smallInteger('role')->default('3');
 
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('schoolYear_id')->nullable();
-            $table->unsignedBigInteger('major_id')->nullable();
+            $table->unsignedBigInteger('fee_id');
 
             $table->timestamps();
 
             // Định nghĩa các khóa ngoại
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('major_id')->references('id')->on('majors')->nullable();
-            $table->foreign('schoolYear_id')->references('id')->on('school_years')->nullable();
+            $table->foreign('fee_id')->references('id')->on('fees');
         });
     }
 
