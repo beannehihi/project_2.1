@@ -82,8 +82,8 @@ class SchoolYearController extends Controller
             return redirect()->route('school_years')->with('error', 'Không tìm thấy School Year');
         }
 
-        if ($schoolYear->students()->count() > 0 || $schoolYear->fees()->count() > 0) {
-            return redirect()->route('school_years')->with('error', 'Không thể xóa School Year có liên kết với học sinh hoặc các khoản phí.');
+        if ($schoolYear->fees()->count() > 0) {
+            return redirect()->route('school_years')->with('error', 'Không thể xóa School Year có liên kết với các khoản phí.');
         }
 
         $schoolYear->delete();

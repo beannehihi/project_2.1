@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
             $studentsInDebt = $schoolYear->fees->flatMap(function ($fee) {
                 return $fee->tuition_fee->filter(function ($tuitionFee) use ($fee) {
-                    return $tuitionFee->times < $fee->month;
+                    return  $fee->month - $tuitionFee->times != 0;
                 })->pluck('student_id');
             })->unique()->count();
 

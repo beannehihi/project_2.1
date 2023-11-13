@@ -26,7 +26,7 @@ return new class extends Migration
             $table->smallInteger('role')->default('3');
 
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('fee_id');
+            $table->unsignedBigInteger('fee_id')->nullable();
 
             $table->timestamps();
 

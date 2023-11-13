@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Fees;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
@@ -10,13 +11,13 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Row;
 
 class StudentImport implements ToModel, WithHeadingRow
 {
 
     public function model(array $row)
     {
-        // Lấy user_id từ session
         $user_id = request()->session()->get('user_id');
 
         $studentCode = $row['ma_sinh_vien'];
@@ -26,17 +27,33 @@ class StudentImport implements ToModel, WithHeadingRow
             $phoneNumber = '0' . $phoneNumber;
         }
 
+        $email = $row['email'];
+
+        if (Student::where('email', $email)->exists()) {
+            toastr()->addError("Email '$email' đã tồn tại.");
+            return null;
+        }
+
+        $feeName = $row['hoc_phi'];
+        $fee = Fees::where('name', $feeName)->value('id');
+
+        $excelDate = $row['sinh_nhat'];
+
+        $timestamp = strtotime($excelDate);
+
+        $dateOfBirth = date('Y-m-d', $timestamp);
 
         return new Student([
             'student_code' => $studentCode,
             'name' => $row['ho_va_ten'],
-            'date_of_birth' => Carbon::createFromFormat('d/m/Y', $row['sinh_nhat'])->toDateString(),
+            'date_of_birth' => $dateOfBirth,
             'phone' => $phoneNumber,
-            'email' => $row['email'],
+            'email' => $email,
             'location' => $row['dia_chi'],
             'scholarship' => $row['hoc_bong'],
             'user_id' => $user_id,
-            'password' => $studentCode, // Gán mật khẩu đã được tạo
+            'password' => $studentCode,
+            'fee_id' => $fee,
         ]);
     }
 

@@ -25,7 +25,8 @@ class ProfileController extends Controller
         ]);
 
         auth()->user()->update($attributes);
-        return back()->with('success', 'Cập nhật thành công');
+        toastr()->addSuccess('Cập nhật thành công');
+        return back();
         // Profile successfully updated.
     }
 }

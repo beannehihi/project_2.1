@@ -43,9 +43,8 @@
                     <div class="card">
                         <div class="card-body px-0 pb-2">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0 ">
+                                <table class="table align-items-center mb-0 table-hover">
                                     <thead>
-
                                         <tr>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -82,7 +81,8 @@
                                                             aria-expanded="false">
                                                             <i class="fa fa-cog" aria-hidden="true"></i>
                                                         </button>
-                                                        <ul class="dropdown-menu border border-1" style="min-width: 5px"
+                                                        <ul class="dropdown-menu border border-1" id="test"
+                                                            style="min-width: 5px"
                                                             aria-labelledby="dropdownMenuButton1">
                                                             <form
                                                                 action="{{ route('students_delete', ['id' => $student->id]) }}"
@@ -103,7 +103,7 @@
                                                 </td>
 
                                                 <td class="align-middle text-center text-sm">
-                                                    <p class="text-xs text-secondary mb-0">
+                                                    <p class="text-xs text-secondary mb-0" id="code_col">
                                                         {{ $student->student_code }}
                                                     </p>
                                                 </td>
@@ -376,7 +376,7 @@
                                             <input class="form-control mb-2" id="fee-search" type="text"
                                                 placeholder="Search...">
                                             <select class="form-select form-select-sm" name="fee_id" id="fee-select"
-                                                size="5" aria-label=".form-select-sm example">
+                                                size="10" aria-label=".form-select-sm example">
                                                 @foreach ($fees as $fee)
                                                     <option value="{{ $fee->id }}">
                                                         {{ $fee->schoolYear->name }} - Chuyên ngành:
@@ -402,19 +402,42 @@
         </div>
 
 
+
+
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var searchInput = document.getElementById('fee-search');
-                var feeSelect = document.getElementById('fee-select');
+            // Assuming you have included Bootstrap JavaScript
 
-                searchInput.addEventListener('input', function() {
-                    var searchTerm = searchInput.value.toLowerCase();
+            document.getElementById('dropdownMenuButton1').addEventListener('click', function(e) {
+                e.stopPropagation(); // This prevents the click event from propagating further
+                // Your additional logic or handling goes here
+            });
 
-                    for (var i = 0; i < feeSelect.options.length; i++) {
-                        var optionText = feeSelect.options[i].text.toLowerCase();
-                        var isMatch = optionText.indexOf(searchTerm) > -1;
-                        feeSelect.options[i].style.display = isMatch ? '' : 'none';
-                    }
+            document.getElementById('test').addEventListener('click', function(e) {
+                e.stopPropagation(); // This prevents the click event from propagating further
+                // Your additional logic or handling goes here
+            });
+        </script>
+
+
+        <!-- Trong file HTML chứa bảng -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const tableRows = document.querySelectorAll('.table tbody tr #code_col');
+
+
+                tableRows.forEach(row => {
+                    // Lấy giá trị student_code từ cột tương ứng
+                    const studentCode = row.innerText.trim();
+
+                    // Thêm sự kiện click cho mỗi hàng
+                    row.addEventListener('click', function() {
+                        // Xây dựng URL với tham số student_code
+                        const searchURL =
+                            `{{ route('tuition') }}?search_term=${encodeURIComponent(studentCode)}`;
+
+                        // Chuyển hướng đến trang tìm kiếm
+                        window.location.href = searchURL;
+                    });
                 });
             });
         </script>

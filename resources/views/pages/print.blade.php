@@ -36,7 +36,6 @@
             <div>Họ và tên người nộp tiền: {{ $tuitionFee->student->name }}</div>
             <div>Địa chỉ: {{ $tuitionFee->student->location }}</div>
             <div>Chuyên ngành: {{ $tuitionFee->fees->major->name }}</div>
-            <div>Ngày sinh: {{ $tuitionFee->student->date_of_birth }}</div>
         </div>
 
         <table class="table border-primary table-bordered text-sm">
@@ -45,14 +44,15 @@
                     <th>Học phí đợt</th>
                     <th>Ngày đóng</th>
                     <th>Tiền nộp</th>
-                    <th>Tổng tiền cả khóa</th>
+                    {{-- <th>Nợ phí</th> --}}
                 </tr>
             </thead>
             <tr>
                 <td>{{ $tuitionFee->fees->month }}</td>
                 <td>{{ $tuitionFee->created_at->format('d/m/y') }}</td>
-                <td>{{ number_format($tuitionFee->fee, 0, ',', '.') }}</td>
-                <td>{{ number_format($tuitionFee->fees->total_fee, 0, ',', '.') }}</td>
+                <td>{{ number_format(($tuitionFee->fees->total_fee - $tuitionFee->student->scholarship) / 30, 0, ',', '.') }}
+                </td>
+                {{-- <td>{{ number_format(max(0,$tuitionFee->fee - ), 0, ',', '.') }}</td> --}}
             </tr>
         </table>
 

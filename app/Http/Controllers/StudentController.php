@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Imports\StudentImport;
 use App\Models\Fees;
 use App\Models\Student;
+use App\Models\Tuition_fee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
-    //
     public function create(Request $request)
     {
 
@@ -35,28 +35,12 @@ class StudentController extends Controller
 
     public function import(Request $request)
     {
-        try {
-            $user_id = Auth::id();
+        $user_id = Auth::id();
 
-            session(['user_id' => $user_id]);
+        session(['user_id' => $user_id]);
 
-            $file = $request->file('importExcel');
-            $data = Excel::toArray(new StudentImport(), $file);
-
-            $emails = collect($data)->flatten(1)->pluck('email')->toArray();
-
-            $existingEmails = Student::whereIn('email', $emails)->pluck('email')->toArray();
-
-            if (!empty($existingEmails)) {
-                toastr()->addError('email đang bị trùng');
-            } else {
-                Excel::import(new StudentImport(), $file);
-                toastr()->addSuccess('Thêm sinh viên thành công.');
-            }
-        } catch (\Exception $e) {
-            toastr()->error('Đã xảy ra lỗi trong quá trình nhập dữ liệu.' . $e->getMessage());
-        }
-
+        $file = $request->file('importExcel');
+        Excel::import(new StudentImport(), $file);
         return redirect()->back();
     }
 
@@ -77,7 +61,7 @@ class StudentController extends Controller
                 'gender' => 'nullable',
                 'role' => 'nullable',
                 'user_id' => 'nullable',
-                'fee_id' => 'required',
+                'fee_id' => 'nullable',
             ]);
 
             $student_code = 'BKC-' . $validatedData['student_code'];
@@ -87,6 +71,7 @@ class StudentController extends Controller
 
             $password = $validatedData['password'] ?? $student_code;
 
+            // Create a new student
             $student = new Student([
                 'student_code' => $student_code,
                 'name' => $validatedData['name'],
@@ -104,15 +89,27 @@ class StudentController extends Controller
 
             $student->save();
 
-            toastr()->addSuccess('Thêm sinh viên thành công.');
+            // Calculate fee
+            $fee = Fees::find($validatedData['fee_id']);
+            $totalFee = $fee->total_fee;
+            $scholarship = $validatedData['scholarship'] ?? 0;
 
+            $tuitionFee = new Tuition_fee([
+                'times' => 0,
+                'fee' => ($totalFee - $scholarship) / 30,
+                'student_id' => $student->id,
+                'fee_id' => $fee->id,
+            ]);
+
+            $tuitionFee->save();
+            toastr()->addSuccess('Thêm sinh viên và học phí thành công.');
             return redirect()->route('students');
         } else {
-
             toastr()->addError('Vui lòng đăng nhập trước khi thêm sinh viên.');
             return redirect()->route('login');
         }
     }
+
 
 
     public function update(Request $request, $id)
@@ -169,11 +166,11 @@ class StudentController extends Controller
     public function delete($id)
     {
         if (Auth::check()) {
-            $student = Student::with('tuition_fees')->find($id);
+            $student = Student::with('tuitionFees')->find($id);
 
             if ($student) {
                 // Kiểm tra xem sinh viên có bất kỳ khoản học phí nào không
-                if ($student->tuition_fees->isNotEmpty()) {
+                if ($student->tuitionFees->isNotEmpty()) {
                     toastr()->addError('Sinh viên này đang có các khoản học phí liên quan và không thể xóa.');
                     return redirect()->route('students');
                 }

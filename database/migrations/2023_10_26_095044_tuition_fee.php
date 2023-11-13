@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->smallInteger('times')->nullable();
             $table->integer('fee')->nullable();;
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('fee_id');
+            $table->unsignedBigInteger('student_id')->nullable();
+            $table->unsignedBigInteger('fee_id')->nullable();
 
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('students');

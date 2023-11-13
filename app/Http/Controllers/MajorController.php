@@ -28,18 +28,22 @@ class MajorController extends Controller
         $name = $request->input('name');
 
         if (empty($name)) {
-            return redirect()->route('majors')->with('error', 'Tên không được để trống.');
+            toastr()->addError('Tên không được để trống.');
+            return redirect()->route('majors');
         }
 
         $existingMajor = Major::where('name', $name)->first();
         if ($existingMajor) {
-            return redirect()->route('majors')->with('error', 'Chuyên ngành đã tồn tại.');
+            toastr()->addError('Chuyên ngành đã tồn tại.');
+
+            return redirect()->route('majors');
         }
 
         $newMajor = new Major(['name' => $name]);
         $newMajor->save();
+        toastr()->addSuccess('Thêm thành công');
 
-        return redirect()->route('majors')->with('success', 'Thêm thành công');
+        return redirect()->route('majors');
     }
 
     public function update(Request $request)
@@ -48,36 +52,49 @@ class MajorController extends Controller
         $name = $request->input('name');
 
         if (empty($id) || empty($name)) {
-            return redirect()->route('majors')->with('error', 'ID hoặc tên không được để trống.');
+            toastr()->addError('ID hoặc tên không được để trống.');
+
+            return redirect()->route('majors');
         }
 
         $major = Major::find($id);
         if (!$major) {
-            return redirect()->route('majors')->with('error', 'Không tìm thấy chuyên ngành');
+            toastr()->addError('Không tìm thấy chuyên ngành');
+
+            return redirect()->route('majors');
         }
 
         $major->name = $name;
         $major->save();
+        toastr()->addSuccess('Cập nhật chuyên ngành thành công');
 
-        return redirect()->route('majors')->with('success', 'Cập nhật chuyên ngành thành công');
+        return redirect()->route('majors');
     }
 
     public function delete($id)
     {
         if (empty($id)) {
-            return redirect()->route('majors')->with('error', 'ID không được để trống.');
+            toastr()->addError('ID không được để trống.');
+            return redirect()->route('majors');
         }
 
         $major = Major::find($id);
         if (!$major) {
-            return redirect()->route('majors')->with('error', 'Không tìm thấy chuyên ngành.');
+            toastr()->addError('Không tìm thấy chuyên ngành.');
+
+            return redirect()->route('majors');
         }
 
         if ($major->fees()->count() > 0) {
-            return redirect()->route('majors')->with('error', 'Không thể xóa chuyên ngành này vì nó đang được sử dụng.');
+            toastr()->addError('Không thể xóa chuyên ngành này vì nó đang được sử dụng.');
+
+            return redirect()->route('majors');
         }
 
         $major->delete();
-        return redirect()->route('majors')->with('success', 'Xóa chuyên ngành thành công');
+        toastr()->addSuccess('Xóa chuyên ngành thành công');
+
+
+        return redirect()->route('majors');
     }
 }

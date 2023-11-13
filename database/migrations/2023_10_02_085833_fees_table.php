@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->smallInteger('month')->nullable();
             $table->bigInteger('total_fee')->nullable();
 

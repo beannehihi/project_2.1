@@ -12,6 +12,7 @@ class Fees extends Model
 
 
     protected $fillable = [
+        'name',
         'month',
         'total_fee',
         'schoolYear_id',
@@ -33,7 +34,6 @@ class Fees extends Model
     {
         return $this->belongsTo(Major::class, 'major_id', 'id');
     }
-
 
     public function students()
     {

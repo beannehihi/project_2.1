@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Classes;
+use App\Models\Fees;
 use App\Models\Major;
 use App\Models\SchoolYear;
 use App\Models\Tuition_fee;
@@ -22,24 +23,28 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
-
-
+        $faker = \Faker\Factory::create('vi_VN'); // Sử dụng ngôn ngữ tiếng Việt
 
         $studentCode = 'BKC-' . mt_rand(1000, 9999);
+
+        // Hàm để đảm bảo scholarship là số tròn không lẻ
+        $evenScholarship = function () use ($faker) {
+            return $faker->numberBetween(0, 10000000) * 2;
+        };
+
         return [
-            'student_code' => $studentCode, // Mã sinh viên ngẫu nhiên từ 1000 đến 9999
-            'name' => $this->faker->name,
-            'date_of_birth' => $this->faker->date,
-            'phone' => $this->faker->phoneNumber,
-            'email' => $this->faker->unique()->safeEmail,
-            'password' => $studentCode, // Mật khẩu mẫu
-            'location' => $this->faker->address,
-            'scholarship' => $this->faker->numberBetween(1, 100) * 1000000,
-            'gender' => $this->faker->randomElement(['0', '1']), // Giới tính ngẫu nhiên
-            'role' => '3', // Vai trò mặc định
+            'student_code' => $studentCode,
+            'name' => $faker->name,
+            'date_of_birth' => $faker->date,
+            'phone' => $faker->phoneNumber, // Số điện thoại Việt Nam
+            'email' => $faker->unique()->safeEmail,
+            'password' => bcrypt($studentCode),
+            'location' => $faker->address, // Địa chỉ Việt Nam
+            'scholarship' => $evenScholarship(),
+            'gender' => $faker->randomElement(['0', '1']),
+            'role' => '3',
             'user_id' => User::inRandomOrder()->first()->id,
-            'major_id' => null,
-            'schoolYear_id' => null,
+            'fee_id' => Fees::inRandomOrder()->first()->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -12,7 +12,7 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons">weekend</i>
+                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize text-uppercase">Số Lượng Chuyên Ngành</p>
@@ -47,7 +47,7 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons">person</i>
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Số Lượng liên Khóa</p>
@@ -65,11 +65,11 @@
 
             {{-- chart --}}
             <div class="row mt-4">
-                <div class=" col-md-5 mt-4 mb-4">
+                <div class=" col-md-5 mt-4 mb-4 ">
                     <div class="card z-index-2 ">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                        <div class="card-header p-0 position-relative mt-n4 z-index-2 bg-transparent mx-100%">
                             <div class="bg-gradient shadow-secondary  border-radius-lg py-3 pe-1">
-                                <div class="chart text-white" style="height:auto">
+                                <div class="chart text-white">
                                     <canvas id="myChart"></canvas>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
             type: 'bar', // Loại biểu đồ, có thể là 'bar', 'line', etc.
             data: chartData, // Sử dụng dữ liệu từ controller
             options: {
-                indexAxis: 'y', // Chọn trục cho biểu đồ cột nằm ngang
+                indexAxis: 'x', // Chọn trục cho biểu đồ cột nằm ngang
                 scales: {
                     y: {
                         beginAtZero: true // Yêu cầu trục y bắt đầu từ 0
